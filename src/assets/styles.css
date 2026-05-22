@@ -8,6 +8,8 @@ header {
   border-bottom: solid 1px #dddddd;
   position: fixed;
   -webkit-backface-visibility: hidden; /* Helps with flickering */
+  /* Standard syntax (Modern Chrome, Firefox, Safari, Edge, Opera) */
+  backface-visibility: hidden;
   transform: translateZ(0); /* Forces hardware acceleration */
   width: 100%;
   background: #fff;
