@@ -1,14 +1,19 @@
+:root {
+  --default-text: #000;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  text-wrap: wrap;
 }
 html {
   font-size: 62.5%;
 }
 body {
-  font-family: system-ui, sans-serif;
-  color: black;
+  font-family: Arial, sans-serif;
+  color: var(--default-text);
   background-color: white;
 }
 ul {
@@ -16,6 +21,7 @@ ul {
 }
 a {
   color: #000;
+  text-decoration: none;
 }
 a:hover{
   text-decoration: none;

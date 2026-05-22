@@ -2,14 +2,13 @@
 import { Component, ElementRef, OnInit, ViewChild, ChangeDetectorRef, AfterViewInit } from '@angular/core';
 import { blogPosts } from '../../data/blog-posts';
 import { RouterModule } from '@angular/router';
-import { NgFor, NgIf } from '@angular/common';
 
 import { BlogService } from 'src/app/services/blog.service';
 
 @Component({
   selector: 'app-blog',
   templateUrl: './blog.component.html',
-  imports: [RouterModule, NgFor, NgIf]
+  imports: [RouterModule]
 })
 export class BlogComponent implements OnInit, AfterViewInit  {
   blogPosts = blogPosts;

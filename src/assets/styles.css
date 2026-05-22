@@ -5,7 +5,12 @@ header {
   gap: 0.5rem;
   /* grid-template-columns: 0.4fr 2fr 0.5fr;*/
   padding: 0.7rem 1rem;
-  border-bottom: solid 1px #a8a8a8;
+  border-bottom: solid 1px #dddddd;
+  position: fixed;
+  -webkit-backface-visibility: hidden; /* Helps with flickering */
+  transform: translateZ(0); /* Forces hardware acceleration */
+  width: 100%;
+  background: #fff;
 }
 header h1 {
   font-size: 2rem;
@@ -74,9 +79,10 @@ aside,
 .middle-panel h1, .middle-panel h2, .middle-panel h3, .middle-panel h4, .middle-panel h5, .middle-panel h6 {
   line-height: 4rem;
 }
-.middle-panel h1 { font-size: 2em; font-weight: 600; color: #0166f0;}
+.middle-panel h1 { font-size: 2em; font-weight: 530; color: #2f87ff; line-height: 5rem;}
 .middle-panel h2 { font-size: 1.7em; font-weight: 600;}
-.middle-panel h3, .middle-panel h4 { font-weight: 500;}
+.middle-panel h3, .middle-panel h4 { font-weight: 500; }
+.middle-panel h3 { font-size: 1.9rem;}
 .middle-panel p { padding: .3rem 0; line-height: 2.2rem;}
 .middle-panel ul { list-style: disc;}
 .middle-panel ul, .middle-panel ol { margin-left: 2rem;}
@@ -114,7 +120,7 @@ footer {
   aside,
   .middle-panel {
     /* border-radius: 0; */
-    margin: 0 0 2rem;
+    margin: 3rem 0 2rem;
     /* height: 80vh;
     overflow-y: auto; */
   }
@@ -124,6 +130,9 @@ footer {
   .right-panel {
     border-left: 1px solid #f3f3f3;
   }
+}
+@media (width < 1024px) {
+  .middle-panel h1 {margin-top: 7rem}
 }
 .blog-title {
   font-size: 2rem;
@@ -146,7 +155,7 @@ footer {
 .blog-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 2rem;
+  gap: 1rem;
 }
 
 .blog-post {
@@ -162,7 +171,7 @@ footer {
 }
 
 .post-summary {
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   color: #555;
   margin-bottom: 1rem;
 }

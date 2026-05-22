@@ -2,9 +2,9 @@ import { BlogPost } from "../models/blog-post.model"
 export const blogPosts: BlogPost[] = [
   {
     id: 1,
-    route: 'useReducer_hook_better_than_useState',
-    title: '"useReducer" vs "useState"',
-    summary: 'Structured approach to deal with multiple state transitions.'
+    route: 'architecture_api_leadership',
+    title: 'Architecture & Leadership',
+    summary: 'Architecture, API Integraion and Leadership. Full Stack [Node] Topic : Some thoughts on Architecture, API Integraion and Leadership',
   },
   {
     id: 2,
@@ -14,9 +14,9 @@ export const blogPosts: BlogPost[] = [
   },
   {
     id: 3,
-    route: 'architecture_api_leadership',
-    title: 'Architecture & Leadership',
-    summary: 'Some thoughts on Architecture, API Integraion and Leadership',
+    route: 'useReducer_hook_better_than_useState',
+    title: '"useReducer" vs "useState"',
+    summary: 'Structured approach to deal with multiple state transitions.'
   },
   {
     id: 4,
@@ -41,6 +41,12 @@ export const blogPosts: BlogPost[] = [
     route: 'digital_transformation',
     title: 'Digital transformation',
     summary: 'Technology to change how an organization operates fundamentally.',
+  },
+  {
+    id: 8,
+    route: 'style_parent_element_based_on_its_children',
+    title: 'Replace JavaScript toggling',
+    summary: 'The CSS way wins when you only need styling'
   }
 ];
 export const blogPostDetails = {
@@ -221,6 +227,90 @@ export const blogPostDetails = {
       '<h3>Evolve and Expand</h3>',
       '<ul><li>Add new features/modules.</li><li>Expand to new verticals or regions.</li><li>Consider partnerships with larger tech firms.</li></ul>',
     ]
+  },
+  'style_parent_element_based_on_its_children': {
+      heading: 'The simplest and most elegant solution — no JS, no framework needed!',
+      content: [
+        "<p>The CSS way wins when you only need styling — save JS/framework solutions for when you need logic or behavior tied to the image's presence.</p>",
+        '<h2>:has() — The CSS Parent Selector</h2>',
+        '<pre><small>/* Parent reacts to its content — pure CSS */</small> <br />.card:has(img) { <br />  border: 2px solid #3b82f6;<br />}</pre>',
+        "<h2>That's it. The browser handles everything. More real-world examples:</h2>",
+        '<pre><small>/* Form field highlights when input is focused */</small><br />\ .form-field:has(input:focus) {<br />\
+        background: #f0f9ff;<br />\
+        border-color: #3b82f6;<br />\}<br />\ <small>/* Nav item bold when child link is active */</small><br />\ .nav-item:has(.active) {<br />\
+        font-weight: bold;<br />\
+        border-left: 3px solid currentColor;<br />\}<br />\ <small>/* Section dims when a modal inside is open */</small><br />\  .section:has(.modal[open]) {<br />\
+        filter: blur(2px);<br />\
+        pointer-events: none;<br />\}<br />\  <small>/* Label style changes when input is invalid */</small><br />\ .field:has(input:invalid) label {<br />\
+        color: red;<br />\}</pre>',
+        "<h2>Vanilla JS</h2>",
+        "<pre>document.querySelectorAll('.card').forEach(card => { <br /> if (card.querySelector('img')) {  <br />  card.classList.add('has-image'); <br /> }<br />});</pre>",
+        "<h2>Comparison across all approaches:</h2>",
+        '<style>\
+          .compare-table{\
+          width:100%;\
+          border-collapse:collapse;\
+          font-size:18px;\
+          line-height:1.6;\
+          margin:20px 0;\
+          }\
+          .compare-table th{\
+          text-align:left;\
+          padding:16px 12px;\
+          border-bottom:1px solid #cfcfcf;\
+          font-size:20px;\
+          font-weight:700;\
+          }\
+          .compare-table td{\
+          padding:16px 12px;\
+          border-bottom:1px solid #d0d0d0d0;\
+          vertical-align:middle;\
+          }\
+          .compare-table code{\
+          background:#f3f3f3;\
+          border:1px solid #e8e8e8;\
+          border-radius:8px;\
+          padding:4px 10px;\
+          font-size:0.95em;\
+          font-family:monospace;\
+          color:#a12622;\
+          }\
+          .compare-table .highlight{\
+          font-weight:700;\
+          }\
+          </style>\
+          <table class="compare-table">\
+          <tr>\
+          <th>Approach</th>\
+          <th>Code</th>\
+          <th>Runs in</th>\
+          </tr>\
+          <tr>\
+          <td>Vanilla JS</td>\
+          <td><code>querySelector</code> + <code>classList.add</code></td>\
+          <td>Runtime JS</td>\
+          </tr>\
+          <tr>\
+          <td>React</td>\
+          <td><code>className</code> prop / <code>Children</code></td>\
+          <td>Render cycle</td>\
+          </tr>\
+          <tr>\
+          <td>Angular</td>\
+          <td><code>@ContentChild</code> / <code>@Input</code></td>\
+          <td>Lifecycle hook</td>\
+          </tr>\
+          <tr>\
+          <td class="highlight">CSS <code>:has()</code></td>\
+          <td class="highlight">One selector</td>\
+          <td class="highlight">Browser engine</td>\
+          </tr>\
+        </table>',
+        '<h2>React / Angular style approach</h2>',
+        '<pre>\ [Card] &larr; needs to know if it contains an image<br />\
+          &#9492;&mdash; [img] &larr; the thing that triggers the parent&apos;s class\
+        </pre>'
+      ]
   }
 };
 export const closureCode = `
