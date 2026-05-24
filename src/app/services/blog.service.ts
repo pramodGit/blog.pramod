@@ -21,8 +21,8 @@ export class BlogService {
     const start = (safePage - 1) * limit;
     const end = start + limit;
 
-    console.log(`Fetching blogs for page=${safePage}, limit=${limit}`);
-    console.log(`Slice from ${start} to ${end}`);
+    // console.log(`Fetching blogs for page=${safePage}, limit=${limit}`);
+    // console.log(`Slice from ${start} to ${end}`);
 
     const paginated = this.posts.slice(start, end);
     return of(paginated);

@@ -1,8 +1,9 @@
-
-import { Component, ElementRef, OnInit, ViewChild, ChangeDetectorRef, AfterViewInit } from '@angular/core';
+import {
+  Component, ElementRef, OnInit, OnDestroy,
+  ViewChild, ChangeDetectorRef, AfterViewInit
+} from '@angular/core';
 import { blogPosts } from '../../data/blog-posts';
 import { RouterModule } from '@angular/router';
-
 import { BlogService } from 'src/app/services/blog.service';
 
 @Component({
@@ -10,57 +11,74 @@ import { BlogService } from 'src/app/services/blog.service';
   templateUrl: './blog.component.html',
   imports: [RouterModule]
 })
-export class BlogComponent implements OnInit, AfterViewInit  {
+export class BlogComponent implements OnInit, AfterViewInit, OnDestroy {
   blogPosts = blogPosts;
 
   @ViewChild('anchor', { static: false }) anchor!: ElementRef;
   private observer!: IntersectionObserver;
-  
+
   page = 1;
   limit = 4;
   loading = false;
   hasMore = true;
-  blogs: any = [];
+  blogs: any[] = [];
 
   constructor(private blogService: BlogService, private cdr: ChangeDetectorRef) {}
 
-  loadBlogs(): void {
-    this.loading = true;
-    this.blogService.getBlogs(this.page, this.limit).subscribe((data) => {
-      this.blogs.push(...data);
-      this.loading = false;
-      if (data.length < this.limit) {
-        this.hasMore = false;
-      } else {
-        this.page++;
-      }
-      this.cdr.detectChanges();
-    });
+  ngOnInit(): void {
+    this.loadBlogs();
   }
-  trackByRoute(index: number, post: any): string {
-    return post.route; // assuming route is unique
-  }
-  
+
   ngAfterViewInit(): void {
+    this.setupObserver();
+  }
+
+  ngOnDestroy(): void {
+    this.observer?.disconnect();
+  }
+
+  private setupObserver(): void {
     this.observer = new IntersectionObserver(
       (entries) => {
+        // console.log('👁 Anchor visible:', entries[0].isIntersecting);
         const entry = entries[0];
         if (entry.isIntersecting && this.hasMore && !this.loading) {
           this.loadBlogs();
         }
       },
-      {
-        root: null, // <- ✅ This tells it to observe in the body/viewport
-        threshold: 0.1,
-      }
+      { root: null, threshold: 0.1 }
     );
 
-    if (this.anchor) {
+    if (this.anchor?.nativeElement) {
       this.observer.observe(this.anchor.nativeElement);
     }
   }
 
-  ngOnInit(): void {
-    this.loadBlogs();
+  loadBlogs(): void {
+    if (this.loading || !this.hasMore) return; // ✅ Guard against duplicate calls
+
+    this.loading = true;
+    this.blogService.getBlogs(this.page, this.limit).subscribe({
+      next: (data) => {
+        this.blogs.push(...data);
+        this.page++;
+
+        if (data.length < this.limit) {
+          this.hasMore = false;
+          this.observer?.disconnect(); // ✅ Stop observing when no more data
+        }
+
+        this.loading = false;
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.loading = false;          // ✅ Always unblock on error
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  trackByRoute(index: number, post: any): string {
+    return post.route;
   }
 }

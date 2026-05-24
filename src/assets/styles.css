@@ -117,7 +117,7 @@ footer {
 @media (min-width: 1024px) {
   main {
     grid-template-columns: 1fr;
-    padding: 0 12rem;
+    padding: 0 7rem;
   }
   aside,
   .middle-panel {
@@ -188,7 +188,9 @@ footer {
   text-decoration: underline;
 }
 .scroll-anchor {
-  height: 1px;
+  height: 80px;       /* tall enough for IntersectionObserver to detect */
+  margin-top: 16px;   /* ensures it's visually below the last card */
+  visibility: hidden; /* invisible but still occupies space in the DOM */
 }
 .loading {
   text-align: center;

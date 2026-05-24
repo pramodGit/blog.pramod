@@ -47,6 +47,12 @@ export const blogPosts: BlogPost[] = [
     route: 'style_parent_element_based_on_its_children',
     title: 'Replace JavaScript toggling',
     summary: 'The CSS way wins when you only need styling'
+  },
+  {
+    id: 9,
+    route: 'system_design',
+    title: 'System design',
+    summary: 'The discipline of building reliable, scalable, maintainable software systems'
   }
 ];
 export const blogPostDetails = {
@@ -245,6 +251,10 @@ export const blogPostDetails = {
         color: red;<br />\}</pre>',
         "<h2>Vanilla JS</h2>",
         "<pre>document.querySelectorAll('.card').forEach(card => { <br /> if (card.querySelector('img')) {  <br />  card.classList.add('has-image'); <br /> }<br />});</pre>",
+        '<h2>React / Angular style approach</h2>',
+        '<pre>\ [Card] &larr; needs to know if it contains an image<br />\
+          &#9492;&mdash; [img] &larr; the thing that triggers the parent&apos;s class\
+        </pre>',
         "<h2>Comparison across all approaches:</h2>",
         '<style>\
           .compare-table{\
@@ -305,12 +315,20 @@ export const blogPostDetails = {
           <td class="highlight">One selector</td>\
           <td class="highlight">Browser engine</td>\
           </tr>\
-        </table>',
-        '<h2>React / Angular style approach</h2>',
-        '<pre>\ [Card] &larr; needs to know if it contains an image<br />\
-          &#9492;&mdash; [img] &larr; the thing that triggers the parent&apos;s class\
-        </pre>'
+        </table>'
       ]
+  },
+  'system_design': {
+    heading: "System design is the broader discipline of building reliable, scalable, maintainable software systems",
+    content: [
+      "<h2>It's about making good structural decisions for software at scale.</h2>",
+      '<h3>The four main areas are:</h3>',
+      "<p><strong>Distributed systems —</strong> what we've been exploring: consistency, replication, consensus, fault tolerance. Relevant when your data or computation is spread across machines.</p>",
+      "<p><strong>Database design —</strong> choosing the right storage, designing schemas, indexing, transactions. Even a single-machine system has to think about this.</p>",
+      "<p><strong>Application architecture —</strong> how you structure your code and services: monolith vs microservices, API design, caching, auth. This is about the shape of your application logic.</p>",
+      "<p><strong>Infrastructure and reliability —</strong> load balancing, CDNs, observability, deployment pipelines. How your system actually runs in production and stays healthy.</p>",
+      ""
+    ]
   }
 };
 export const closureCode = `
@@ -365,3 +383,138 @@ export const closureCode = `
       }
       console.log(sum(10)(5)(6)());
     `;
+
+export const systemDesign = `<style>
+  .sd-outer {
+    width: 100%;
+    border: 1.5px dashed #b4b2a9;
+    border-radius: 20px;
+    padding: 0 14px;
+    background: #fff;
+    line-height: .5rem;
+  }
+  .sd-title {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 500;
+    color: #1a1a18;
+    margin: 0;
+    padding: 0;
+  }
+  .sd-sub {
+    text-align: center;
+    font-size: 1.6rem;
+    color: #5f5e5a;
+    margin-bottom: 2px;
+  }
+  .sd-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .sd-card {
+    border-radius: 12px;
+    padding: 8px 9px;
+    transition: opacity .15s, transform .15s;
+    text-decoration: none;
+  }
+  .sd-card:hover { opacity: .88; transform: translateY(-1px); }
+  .sd-card-title { font-size: 1.8rem; font-weight: 500; margin-bottom: 2px; }
+  .sd-card-sub   { font-size: 1.5rem; }
+  .sd-card ul    { list-style: none; display: flex; flex-direction: column; gap: 4px; margin: 0 }
+  .sd-card ul li { font-size: 1.4rempx; display: flex; align-items: flex-start; gap: 6px; }
+  .sd-card ul li::before { content: "–"; flex-shrink: 0; }
+
+  .c-purple { background: #EEEDFE; border: 0.5px solid #534AB7; }
+  .c-purple .sd-card-title { color: #3C3489; }
+  .c-purple .sd-card-sub, .c-purple ul li { color: #534AB7; }
+
+  .c-teal { background: #E1F5EE; border: 0.5px solid #0F6E56; }
+  .c-teal .sd-card-title { color: #085041; }
+  .c-teal .sd-card-sub, .c-teal ul li { color: #0F6E56; }
+
+  .c-coral { background: #FAECE7; border: 0.5px solid #993C1D; }
+  .c-coral .sd-card-title { color: #712B13; }
+  .c-coral .sd-card-sub, .c-coral ul li { color: #993C1D; }
+
+  .c-gray { background: #F1EFE8; border: 0.5px solid #5F5E5A; }
+  .c-gray .sd-card-title { color: #444441; }
+  .c-gray .sd-card-sub, .c-gray ul li { color: #5F5E5A; }
+
+  @media (prefers-color-scheme: dark) {
+    body { background: #1a1a18; color: #e8e6de; }
+    .sd-outer { background: #242422; border-color: #444441; }
+    .sd-title { color: #e8e6de; }
+    .sd-sub { color: #888780; }
+
+    .c-purple { background: #3C3489; border-color: #AFA9EC; }
+    .c-purple .sd-card-title { color: #CECBF6; }
+    .c-purple .sd-card-sub, .c-purple ul li { color: #AFA9EC; }
+
+    .c-teal { background: #085041; border-color: #5DCAA5; }
+    .c-teal .sd-card-title { color: #9FE1CB; }
+    .c-teal .sd-card-sub, .c-teal ul li { color: #5DCAA5; }
+
+    .c-coral { background: #712B13; border-color: #F0997B; }
+    .c-coral .sd-card-title { color: #F5C4B3; }
+    .c-coral .sd-card-sub, .c-coral ul li { color: #F0997B; }
+
+    .c-gray { background: #444441; border-color: #B4B2A9; }
+    .c-gray .sd-card-title { color: #D3D1C7; }
+    .c-gray .sd-card-sub, .c-gray ul li { color: #B4B2A9; }
+  }
+
+  @media (max-width: 500px) {
+    .sd-grid { grid-template-columns: 1fr; }
+  }
+</style>
+<div class="sd-outer">
+  <p class="sd-title">System design</p>
+  <p class="sd-sub">The discipline of building reliable, scalable, maintainable software systems</p>
+  <div class="sd-grid">
+    <div class="sd-card c-purple">
+      <p class="sd-card-title">Distributed systems</p>
+      <p class="sd-card-sub">Multiple machines, one logical system</p>
+      <ul>
+        <li>Consistency models</li>
+        <li>Consensus (Raft, Paxos)</li>
+        <li>Replication &amp; partitioning</li>
+        <li>Fault tolerance &amp; CAP theorem</li>
+        <li>Distributed messaging &amp; queues</li>
+      </ul>
+    </div>
+    <div class="sd-card c-teal">
+      <p class="sd-card-title">Database design</p>
+      <p class="sd-card-sub">Storage, retrieval, querying</p>
+      <ul>
+        <li>Relational vs NoSQL</li>
+        <li>Indexing &amp; query optimization</li>
+        <li>Sharding &amp; replication</li>
+        <li>ACID vs BASE transactions</li>
+        <li>Schema design &amp; normalization</li>
+      </ul>
+    </div>
+    <div class="sd-card c-coral">
+      <p class="sd-card-title">Application architecture</p>
+      <p class="sd-card-sub">Structure of your codebase &amp; services</p>
+      <ul>
+        <li>Monolith vs microservices</li>
+        <li>API design (REST, gRPC, GraphQL)</li>
+        <li>Event-driven architecture</li>
+        <li>Caching strategies</li>
+        <li>Authentication &amp; authorization</li>
+      </ul>
+    </div>
+    <div class="sd-card c-gray">
+      <p class="sd-card-title">Infrastructure &amp; reliability</p>
+      <p class="sd-card-sub">How systems run and stay up</p>
+      <ul>
+        <li>Load balancing</li>
+        <li>CDNs &amp; edge networks</li>
+        <li>Observability &amp; tracing</li>
+        <li>CI/CD &amp; deployment</li>
+        <li>Capacity planning</li>
+      </ul>
+    </div>
+  </div>
+</div>`;

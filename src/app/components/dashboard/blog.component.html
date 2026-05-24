@@ -1,9 +1,4 @@
 <div class="blog-container">
-  <!-- <h1 class="blog-title">
-    Latest Blog Posts
-    <a routerLink="/admin" class="admin-link">Go to Admin</a>
-  </h1> -->
-
   <div class="blog-grid">
     @for(post of blogs; track post.id){
       <div class="blog-post">
@@ -14,9 +9,15 @@
       </div>
     } @empty { <p>There are no items.</p> }
   </div>
-  <div #anchor class="scroll-anchor"></div>
-  @if (loading) {<div class="loading">Loading...</div>}
-  
-  
 
+  @if (loading) {
+    <div class="loading">Loading...</div>
+  }
+
+  <!-- ✅ Anchor AFTER loader, always in DOM, never in @if -->
+  <div #anchor class="scroll-anchor"></div>
+
+  @if (!hasMore) {
+    <p class="end-message">You've reached the end.</p>
+  }
 </div>

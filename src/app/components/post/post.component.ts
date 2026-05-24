@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { blogPostDetails, closureCode } from '../../data/blog-posts';
+import { blogPostDetails, closureCode, systemDesign } from '../../data/blog-posts';
 import { NgFor, NgIf } from '@angular/common';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
@@ -16,8 +16,10 @@ export class PostComponent implements OnInit {
   blogPostDetails: Record<string, any> = blogPostDetails;
   postDetails: any;
   codeBlock: SafeHtml;
+  systemDesign: SafeHtml;
   constructor(private route: ActivatedRoute, private sanitizer: DomSanitizer) {
     this.codeBlock = this.sanitizer.bypassSecurityTrustHtml(closureCode);
+    this.systemDesign = this.sanitizer.bypassSecurityTrustHtml(systemDesign);
   }
 
   getSanitizedHtml(html: string): SafeHtml {
