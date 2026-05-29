@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationService } from "../core/navigation.service";
 import { RouterLink } from "@angular/router";
+import { BlogService } from "../services/blog.service";
 
 @Component({
     selector: 'app-header',
@@ -19,4 +20,11 @@ export class HeaderComponent {
 
     private readonly navigationService = inject(NavigationService);
     public navigation = this.navigationService.getNavigation();
+    private readonly blogService = inject(BlogService); // Inject the service
+
+    onSearch(event: Event): void {
+        const input = event.target as HTMLInputElement;
+        this.blogService.updateSearchTerm(input.value);
+    }
+
 }

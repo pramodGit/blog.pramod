@@ -1,20 +1,24 @@
 
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { BlogPost } from '../models/blog-post.model';
 import { environment } from '../../environments/environment';
 import { blogPosts } from '../data/blog-posts';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({  providedIn: 'root' })
 export class BlogService {
   private baseUrl = environment.apiBaseUrl;
   private apiUrl = `${this.baseUrl}/blogs`;
   private posts = blogPosts;
+  // Define a signal for the search term
+  searchTerm = signal('');
 
   constructor(private http: HttpClient) {}
+
+  updateSearchTerm(term: string) {
+    this.searchTerm.set(term.toLowerCase());
+  }
 
   getBlogs(page: number, limit: number): Observable<any[]> {
     const safePage = Math.max(1, page); // Ensures at least 1

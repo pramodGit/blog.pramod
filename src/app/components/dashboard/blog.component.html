@@ -1,13 +1,13 @@
 <div class="blog-container">
   <div class="blog-grid">
-    @for(post of blogs; track post.id){
+    @for(post of filteredBlogs(); track post.id){
       <div class="blog-post">
         <a [routerLink]="['/post', post.route]">
           <h1 class="post-title">{{ post.title }}</h1>
           <p class="post-summary">{{ post.summary }}</p>
         </a>
       </div>
-    } @empty { <p>There are no items.</p> }
+    } @empty { <div class="blog-post"><h3>There are no items.</h3></div> }
   </div>
 
   @if (loading) {

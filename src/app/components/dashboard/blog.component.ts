@@ -1,6 +1,6 @@
 import {
   Component, ElementRef, OnInit, OnDestroy,
-  ViewChild, ChangeDetectorRef, AfterViewInit
+  ViewChild, ChangeDetectorRef, AfterViewInit, computed, signal
 } from '@angular/core';
 import { blogPosts } from '../../data/blog-posts';
 import { RouterModule } from '@angular/router';
@@ -13,6 +13,12 @@ import { BlogService } from 'src/app/services/blog.service';
 })
 export class BlogComponent implements OnInit, AfterViewInit, OnDestroy {
   blogPosts = blogPosts;
+
+  // Convert data into a signal
+  allPosts = signal(blogPosts);
+
+  // Link to the service signal
+  private searchTerm = this.blogService.searchTerm;
 
   @ViewChild('anchor', { static: false }) anchor!: ElementRef;
   private observer!: IntersectionObserver;
@@ -81,4 +87,12 @@ export class BlogComponent implements OnInit, AfterViewInit, OnDestroy {
   trackByRoute(index: number, post: any): string {
     return post.route;
   }
+
+  // Automatically recalculate when searchTerm or allPosts change
+  filteredBlogs = computed(() => {
+    const term = this.searchTerm();
+    return this.allPosts().filter(post => 
+      post.title.toLowerCase().includes(term)
+    );
+  });
 }
