@@ -81,14 +81,16 @@ aside,
 .middle-panel h1, .middle-panel h2, .middle-panel h3, .middle-panel h4, .middle-panel h5, .middle-panel h6 {
   line-height: 4rem;
 }
-.middle-panel h1 { font-size: 2em; font-weight: 530; color: #2f87ff; line-height: 5rem;}
+.middle-panel h1 { font-size: 2em; font-weight: 530; color: #2f87ff; line-height: 4.5rem;}
 .middle-panel h2 { font-size: 1.7em; font-weight: 600;}
 .middle-panel h3, .middle-panel h4 { font-weight: 500; }
 .middle-panel h3 { font-size: 1.9rem;}
+.middle-panel h4 { font-size: 1.6rem;}
+.middle-panel h5 { font-size: 1.4rem; font-weight: 650;}
 .middle-panel p { padding: .3rem 0; line-height: 2.2rem;}
 .middle-panel ul { list-style: disc;}
 .middle-panel ul, .middle-panel ol { margin-left: 2rem;}
-.middle-panel ul > li { padding: .4rem 0 .5rem 1.8rem;}
+.middle-panel ul > li, .middle-panel ol > li { padding: .4rem 0 .5rem 1.8rem;}
 .middle-panel li h2,
 .middle-panel li h3,
 .middle-panel li h4,
@@ -108,6 +110,8 @@ pre{
   pre .var { color: #7f1111;}
   pre .keyword { color: #0c45b7;}
   pre .func { color: #4772c6;}
+
+.end-message { visibility: hidden;}
 footer {
   display: flex;
   justify-content: center;
@@ -188,7 +192,7 @@ footer {
   text-decoration: underline;
 }
 .scroll-anchor {
-  height: 80px;       /* tall enough for IntersectionObserver to detect */
+  height: 10px;       /* tall enough for IntersectionObserver to detect */
   margin-top: 16px;   /* ensures it's visually below the last card */
   visibility: hidden; /* invisible but still occupies space in the DOM */
 }

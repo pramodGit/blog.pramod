@@ -53,6 +53,18 @@ export const blogPosts: BlogPost[] = [
     route: 'system_design',
     title: 'System design',
     summary: 'The discipline of building reliable, scalable, maintainable software systems'
+  },
+  {
+    id: 10,
+    route: 'frontend_architecture_1',
+    title: 'Frontend Architecture: Which framework should I use',
+    summary: 'Frontend development today is mostly about choosing the right trade-offs for your app, not just picking a trendy framework.'
+  },
+  {
+    id: 11,
+    route: 'frontend_architecture_2',
+    title: 'PWAs often use offline-first architecture.',
+    summary: 'PWA (Progressive Web App) is a type of web app that often uses that approach.'
   }
 ];
 export const blogPostDetails = {
@@ -329,6 +341,117 @@ export const blogPostDetails = {
       "<p><strong>Infrastructure and reliability —</strong> load balancing, CDNs, observability, deployment pipelines. How your system actually runs in production and stays healthy.</p>",
       ""
     ]
+  },
+  'frontend_architecture_1': {
+    heading: "How should the app be built and delivered to users?",
+    content: [
+      "<h3>Modern frontend development is no longer just “Which framework should I use?” (like React, Vue, or Angular).<br />Now the bigger question is: How should the app be built and delivered to users?</h3>",
+      "<p>That’s what “architecture choices” means. The terms mentioned are different ways to balance things like:</p>",
+      "<ul><li>speed</li><li>SEO (Google search visibility)</li><li>server cost</li><li>user experience</li><li>offline access</li><li>complexity</li></ul>",
+      "<h3>Here’s the simple breakdown:</h3>",
+      "<ul><li><h5>CSR (Client-Side Rendering)</h5><p>The browser downloads JavaScript and builds the page on the user’s device.→ Good for highly interactive apps, but first load can feel slower.</p></li><li><h5>SSR (Server-Side Rendering)</h5><p>The server creates the page first, then sends ready-to-view HTML to the browser.→ Faster first load and better for SEO, but puts more work on the server.</p></li><li><h5>SSG (Static Site Generation)</h5><p>Pages are pre-built ahead of time and served as static files.→ Extremely fast and cheap to host, but harder for constantly changing content.</p></li>\
+      <li><h5>Hydration</h5><p>After a page loads, JavaScript “activates” it so buttons and interactions work.→ Makes server-rendered pages interactive. Without hydration the page is dead, it is like a printed page converted as touchscreen.</p></li></ul>",
+      "<ul><li><h5>Caching</h5><p>Saving data or pages temporarily so they don’t need to be rebuilt or refetched every time.→ Improves speed and reduces server load.</p></li></ul>",
+      "<ul><li><h5>Offline support</h5><p>Making apps still work partially or fully without internet.→ Useful for mobile-like web apps.</p></li></ul>",
+      "<p>The app is designed to keep working even when the internet is slow or completely gone.→ It works because the browser has special tools that save files and data locally.</p>"
+    ]
+  },
+  'frontend_architecture_2': {
+    heading: "Offline-first is not PWA (Progressive Web App)",
+    content: [
+      "<h3>Offline-First: How It Really Works</h3>\
+      <blockquote>The app is designed to keep working even when the internet is slow or completely gone.</blockquote>\
+      <p>It works because the browser has special tools that save files and data locally.</p>\
+      <h3>The Main Pieces</h3>\
+      <h3>1. Service Workers = The Manager</h3>\
+      <p>A <strong>Service Worker</strong> is a small background script the browser runs separately from the webpage.</p>",
+      "<p>Its job is to:</p>\
+      <ul><li>Watch network requests</li><li>Decide whether to:\
+          \<ul>\
+            \<li>Use saved files/data\</li>\
+            \<li>Fetch fresh data from the internet\</li>\
+          \</ul>\
+        \</li>\
+        \<li>Keep parts of the app working offline\</li>\
+      \</ul>\
+      <p>Simple analogy:\</p>",
+      "\<blockquote>\
+      It’s like a smart traffic controller deciding where data should come from.\
+      \</blockquote>\
+      <p>Example:\</p>\
+      <ul>\
+        \<li>User opens app without internet\</li>\
+        \<li>\
+          Service Worker says:\
+          “I already saved this page earlier, so I’ll load the saved version.”\
+        \</li>\
+      \</ul>\
+      \<h3>2. Cache API = Saved Website Files\</h3>\
+      <p>\
+      This stores things like:\
+      \</p>\
+      <ul>\
+        \<li>HTML\</li>\
+        \<li>CSS\</li>\
+        \<li>JavaScript\</li>\
+        \<li>Images\</li>\
+      \</ul>\
+        <p>\
+      So the app can load quickly or even offline.\
+      \</p>\
+      <p>Think of it like:\</p>\
+      <blockquote>\
+      Keeping copies of important website files in a local folder.\
+      \</blockquote>\
+      <h3>3. IndexedDB = Local Database\</h3>\
+      <p>\
+      This stores actual app data, such as:\
+      \</p>\
+      <ul>\
+        \<li>Messages\</li>\
+        \<li>Notes\</li>\
+        \<li>Tasks\</li>\
+        \<li>User settings\</li>\
+      \</ul>\
+      <p>\
+      Even without internet, the app can still show and edit data locally.\
+      \</p>\
+      <p>Think of it like: A mini database inside the browser.</p>\
+      <h3>Full Flow\</h3>\
+      <ol>\
+        \<li>User opens app\</li>\
+        \<li>\
+          Service Worker checks:\
+          \<ul>\
+            \<li>“Do I have saved files/data?”\</li>\
+          \</ul>\
+        \</li>\
+        \<li>\
+          If yes:\
+          \<ul>\
+            \<li>Load from cache or IndexedDB\</li>\
+          \</ul>\
+        \</li>\
+        \<li>\
+          If internet exists:\
+          \<ul>\
+            \<li>Fetch fresh data and update local storage\</li>\
+          \</ul>\
+        \</li>\
+      \</ol>\
+      <p>\
+      That’s how apps like:\
+      \</p>\
+      \<ul>\
+        \<li>Spotify Web</li>\
+        \<li>Google Docs</li>\
+        \<li>Twitter/X</li>\
+        \<li>PWAs</li>\
+      \</ul>\
+      \<p>\
+      can still work when connection is weak or offline.\
+      \</p>"
+    ]
   }
 };
 export const closureCode = `
@@ -389,9 +512,9 @@ export const systemDesign = `<style>
     width: 100%;
     border: 1.5px dashed #b4b2a9;
     border-radius: 20px;
-    padding: 0 14px;
+    padding: 0 14px 15px;
     background: #fff;
-    line-height: .5rem;
+    line-height: 1.5;
   }
   .sd-title {
     text-align: center;
