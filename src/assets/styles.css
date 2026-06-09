@@ -164,7 +164,7 @@ footer {
 
 .blog-post {
   background-color: #ffffff;
-  padding: 1rem; border: 1px solid #ccc; border-radius: 1rem;
+  padding: 1rem;
 }
 
 .middle-panel h1.post-title {
@@ -196,5 +196,10 @@ footer {
   text-align: center;
   padding: 1rem;
   font-weight: bold;
+}
+@media (width < 1024px) {
+  .blog-post {
+    border: 1px solid #ccc; border-radius: 1rem;
+  }
 }
 /** Blog End **/
