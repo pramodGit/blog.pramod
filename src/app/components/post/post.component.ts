@@ -1,6 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { blogPostDetails, closureCode, systemDesign } from '../../data/blog-posts';
+import { 
+  blogPostDetails, 
+  closureCode, 
+  systemDesign, 
+  javascriptSorting_1, 
+  javascriptSorting_2, 
+  javascriptSorting_3, 
+  javascriptSorting_4, 
+  javascriptSorting_5,
+  javascriptSorting_6
+} from '../../data/blog-posts';
 import { NgFor, NgIf } from '@angular/common';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
@@ -15,15 +25,29 @@ export class PostComponent implements OnInit {
   postRoute!: string | null;
   blogPostDetails: Record<string, any> = blogPostDetails;
   postDetails: any;
-  codeBlock: SafeHtml;
-  systemDesign: SafeHtml;
+  // codeBlock: SafeHtml;
+  // systemDesign: SafeHtml;
   constructor(private route: ActivatedRoute, private sanitizer: DomSanitizer) {
-    this.codeBlock = this.sanitizer.bypassSecurityTrustHtml(closureCode);
-    this.systemDesign = this.sanitizer.bypassSecurityTrustHtml(systemDesign);
+    // this.codeBlock = this.sanitizer.bypassSecurityTrustHtml(closureCode);
+    // this.systemDesign = this.sanitizer.bypassSecurityTrustHtml(systemDesign);
   }
+  private placeholders: Record<string, string> = {
+    '_closureCode_': closureCode,
+    '_systemDesign_': systemDesign,
+    '_javascriptSorting_1': javascriptSorting_1,
+    '_javascriptSorting_2': javascriptSorting_2,
+    '_javascriptSorting_3': javascriptSorting_3,
+    '_javascriptSorting_4': javascriptSorting_4,
+    '_javascriptSorting_5': javascriptSorting_5,
+    '_javascriptSorting_6': javascriptSorting_6,
+  };
 
   getSanitizedHtml(html: string): SafeHtml {
-    return this.sanitizer.bypassSecurityTrustHtml(html);
+    const resolved = Object.entries(this.placeholders).reduce(
+      (str, [key, val]) => str.replace(key, val),
+      html
+    );
+    return this.sanitizer.bypassSecurityTrustHtml(resolved);
   }
 
   ngOnInit(): void {

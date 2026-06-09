@@ -65,6 +65,12 @@ export const blogPosts: BlogPost[] = [
     route: 'frontend_architecture_2',
     title: 'PWAs often use offline-first architecture.',
     summary: 'PWA (Progressive Web App) is a type of web app that often uses that approach.'
+  },
+  {
+    id: 12,
+    route: 'javascript_sorting',
+    title: 'JavaScript Sorting',
+    summary: 'In JavaScript, sorting is primarily done using the built-in sort() method or the non-mutating toSorted() method.'
   }
 ];
 export const blogPostDetails = {
@@ -88,7 +94,8 @@ export const blogPostDetails = {
       '<h2>Common Uses of Closures:</h2>',
       '<ol><li><h3>Callbacks</h3> - They are used in callbacks to access variables from the outer scope.</li><li><h3>Data Hiding</h3> - Closures enable the creation of private variables, enhancing data security.</li><li><h3>Emulating Private Methods</h3> - They can be used to create private methods within objects.</li><li><h3>Creating Iterators</h3> - Closures can be used to create functions that act as iterators.</li></ol>',
       '<h2>Potential Pitfalls:</h2>',
-      '<ul><li><h3>Memory Leaks:</h3> - If closures capture variables that are no longer needed, they can cause memory leaks.</li></ul>'
+      '<ul><li><h3>Memory Leaks:</h3> - If closures capture variables that are no longer needed, they can cause memory leaks.</li></ul>',
+      `<pre><code>_closureCode_</code></pre>`
     ]
   },
   'architecture_api_leadership': {
@@ -339,7 +346,7 @@ export const blogPostDetails = {
       "<p><strong>Database design —</strong> choosing the right storage, designing schemas, indexing, transactions. Even a single-machine system has to think about this.</p>",
       "<p><strong>Application architecture —</strong> how you structure your code and services: monolith vs microservices, API design, caching, auth. This is about the shape of your application logic.</p>",
       "<p><strong>Infrastructure and reliability —</strong> load balancing, CDNs, observability, deployment pipelines. How your system actually runs in production and stays healthy.</p>",
-      ""
+      "<pre><code>_systemDesign_</code></pre>"
     ]
   },
   'frontend_architecture_1': {
@@ -451,6 +458,35 @@ export const blogPostDetails = {
       \<p>\
       can still work when connection is weak or offline.\
       \</p>"
+    ]
+  },
+  'javascript_sorting': {
+    heading: 'In JavaScript, you can sort arrays using sort() or toSorted().',
+    content: [
+      '<h2>By default, they sort items as text (strings), so numbers may not be sorted correctly unless you provide a comparison function.</h2>',
+      '<p>To sort data accurately, you must pass a compare function. Here is exactly how to achieve ascending and descending orders for numbers, strings, and objects.</p>',
+      '<h3>1. Sorting Numbers</h3>',
+      '<p>When sorting numbers, your comparison function should return a negative, zero, or positive value to determine the order.',
+      '<h4>Ascending Order (Smallest to Largest)</h4>',
+      '<p>Subtract the second element (b) from the first element (a):</p>',
+      '<pre><code><h3>javascript</h3></code><code>_javascriptSorting_1</code></pre>',
+      '<h4>Descending Order (Largest to Smallest)</h4>',
+      '<p>Subtract the first element (a) from the second element (b)</p>',
+      '<pre><code><h3>javascript</h3></code><code>_javascriptSorting_2</code></pre>',
+      '<h3>2. Sorting Strings</h3>',
+      '<p>For string collections, use the localeCompare() method. This provides robust alphabetical sorting that handles accents and case variations correctly.</p>',
+      '<h4>Ascending Order (A to Z), Compare a against b</h4>',
+      '<pre><code><h3>javascript</h3></code><code>_javascriptSorting_3</code></pre>',
+      '<h4>Descending Order (Z to A), Compare b against a</h4>',
+      '<pre><code><h3>javascript</h3></code><code>_javascriptSorting_4</code></pre>',
+      '<h3>3. Sorting an Array of Objects</h3>',
+      '<p>To sort a collection of objects, target the specific property key within your comparison function.</p>',
+      '<h4>Ascending Order (by Number or String Property)</h4>',
+      '<pre><code><h3>javascript</h3></code><code>_javascriptSorting_5</code></pre>',
+      '<h4>Descending Order (by Number or String Property)</h4>',
+      '<pre><code><h3>javascript</h3></code><code>_javascriptSorting_6</code></pre>',
+      '<h3>Mutating vs Non-Mutating</h3>',
+      '<ul><li><h3>sort(): Modifies the original array directly (in-place mutation).</h3></li><li><h3>toSorted(): Leaves the original array unchanged and returns a brand new sorted array.</h3></li></ul>'
     ]
   }
 };
@@ -641,3 +677,48 @@ export const systemDesign = `<style>
     </div>
   </div>
 </div>`;
+export const javascriptSorting_1 = `<span class="keyword">const</span> numbers = [40, 100, 1, 5, 25];
+numbers.sort((a, b) => a - b);
+
+console.log(numbers);
+<span class="comment">// Output: [1, 5, 25, 40, 100]</span>
+`;
+export const javascriptSorting_2 = `<span class="keyword">const</span> numbers = [40, 100, 1, 5, 25];
+numbers.sort((a, b) => b - a);
+
+console.log(numbers);
+<span class="comment">// Output: [100, 40, 25, 5, 1]</span>
+`;
+
+export const javascriptSorting_3 = `<span class="keyword">const</span> fruits = ['banana', 'Apple', 'cherry'];
+fruits.sort((a, b) => a.localeCompare(b))
+
+console.log(fruits);
+<span class="comment">// Output: ['Apple', 'banana', 'cherry']</span>
+`;
+
+export const javascriptSorting_4 = `<span class="keyword">const</span> fruits = ['banana', 'Apple', 'cherry'];
+fruits.sort((a, b) => b.localeCompare(a)))
+
+console.log(fruits);
+<span class="comment">// Output: ['cherry', 'banana', 'Apple']</span>
+`;
+
+export const javascriptSorting_5 = `const items = [
+  { name: 'Laptop', price: 1000 },
+  { name: 'Phone', price: 500 },
+  { name: 'Tablet', price: 800 }
+];
+
+// Ascending by price
+items.sort((a, b) => a.price - b.price);
+
+// Ascending alphabetically by name
+items.sort((a, b) => a.name.localeCompare(b.name));
+`;
+export const javascriptSorting_6 = `// Descending by price
+items.sort((a, b) => b.price - a.price);
+
+// Descending alphabetically by name
+items.sort((a, b) => b.name.localeCompare(a.name));
+`;
