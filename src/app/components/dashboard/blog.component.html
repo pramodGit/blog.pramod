@@ -1,10 +1,16 @@
 <div class="blog-container">
   <div class="blog-grid">
     @for(post of filteredBlogs(); track post.id){
+      
       <div class="blog-post">
         <a [routerLink]="['/post', post.route]">
           <h1 class="post-title">{{ post.title }}</h1>
           <p class="post-summary">{{ post.summary }}</p>
+          <small>{{ post.publishedDate | date:'MMM d, y' }}</small>
+          <span> • </span>
+          <small>{{ post.readTime }}</small>
+          <span> • </span>
+          <span>{{ post.tags }}</span>
         </a>
       </div>
     } @empty { <div class="blog-post"><h3>There are no items.</h3></div> }

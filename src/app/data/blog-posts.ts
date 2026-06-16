@@ -5,72 +5,143 @@ export const blogPosts: BlogPost[] = [
     route: 'architecture_api_leadership',
     title: 'Architecture & Leadership',
     summary: 'Architecture, API Integraion and Leadership. Full Stack [Node] Topic : Some thoughts on Architecture, API Integraion and Leadership',
+    publishedDate: '2026-02-14',
+    readTime: '4 min read',
+    author: 'Pramod Kumar',
+    category: 'Architecture',
+    tags: ['Architecture', ' Leadership']
   },
   {
     id: 2,
     route: 'understanding_closures',
     title: 'Understanding Closures',
     summary: 'A closure is a function that retains access to its lexical scope even when the function is executed outside of that scope.',
+    publishedDate: '2026-02-28',
+    readTime: '4 min read',
+    author: 'Pramod Kumar',
+    category: 'JavaScript',
+    tags: ['JavaScript', ' Closure']
   },
   {
     id: 3,
     route: 'useReducer_hook_better_than_useState',
     title: '"useReducer" vs "useState"',
-    summary: 'Structured approach to deal with multiple state transitions.'
+    summary: 'Structured approach to deal with multiple state transitions.',
+    publishedDate: '2026-03-05',
+    readTime: '4 min read',
+    author: 'Pramod Kumar',
+    category: 'React',
+    tags: ['React', ' Hooks']
   },
   {
     id: 4,
     route: 'vulnerability_prevention_in_react',
     title: 'Vulnerability prevention in React',
     summary: '10 points to know about vulnerability prevention in React app',
+    publishedDate: '2026-03-15',
+    readTime: '4 min read',
+    author: 'Pramod Kumar',
+    category: 'React',
+    tags: ['React']
   },
   {
     id: 5,
     route: 'ecommerce_product_management',
     title: 'Ecommerce product management',
     summary: 'E-commerce product management involves overseeing the lifecycle of products sold.',
+    publishedDate: '2026-03-30',
+    readTime: '4 min read',
+    author: 'Pramod Kumar',
+    category: 'E-Commerce',
+    tags: ['E-Commerce']
   },
   {
     id: 6,
     route: 'useRef_uses_in_React',
     title: '"useRef uses in React',
-    summary: 'useRef hook is a versatile tool prevents re-renders'
+    summary: 'useRef hook is a versatile tool prevents re-renders',
+    publishedDate: '2026-04-05',
+    readTime: '4 min read',
+    author: 'Pramod Kumar',
+    category: 'React',
+    tags: ['React']
   },
   {
     id: 7,
     route: 'digital_transformation',
     title: 'Digital transformation',
     summary: 'Technology to change how an organization operates fundamentally.',
+    publishedDate: '2026-04-15',
+    readTime: '4 min read',
+    author: 'Pramod Kumar',
+    category: 'Digital',
+    tags: ['Digital']
   },
   {
     id: 8,
     route: 'style_parent_element_based_on_its_children',
     title: 'Replace JavaScript toggling',
-    summary: 'The CSS way wins when you only need styling'
+    summary: 'The CSS way wins when you only need styling',
+    publishedDate: '2026-04-30',
+    readTime: '4 min read',
+    author: 'Pramod Kumar',
+    category: 'CSS',
+    tags: ['CSS']
   },
   {
     id: 9,
     route: 'system_design',
     title: 'System design',
-    summary: 'The discipline of building reliable, scalable, maintainable software systems'
+    summary: 'The discipline of building reliable, scalable, maintainable software systems',
+    publishedDate: '2026-05-05',
+    readTime: '4 min read',
+    author: 'Pramod Kumar',
+    category: 'Node',
+    tags: ['System']
   },
   {
     id: 10,
     route: 'frontend_architecture_1',
     title: 'Frontend Architecture: Which framework should I use',
-    summary: 'Frontend development today is mostly about choosing the right trade-offs for your app, not just picking a trendy framework.'
+    summary: 'Frontend development today is mostly about choosing the right trade-offs for your app, not just picking a trendy framework.',
+    publishedDate: '2026-05-15',
+    readTime: '4 min read',
+    author: 'Pramod Kumar',
+    category: 'Frontend',
+    tags: ['Frontend']
   },
   {
     id: 11,
     route: 'frontend_architecture_2',
     title: 'PWAs often use offline-first architecture.',
-    summary: 'PWA (Progressive Web App) is a type of web app that often uses that approach.'
+    summary: 'PWA (Progressive Web App) is a type of web app that often uses that approach.',
+    publishedDate: '2026-05-30',
+    readTime: '4 min read',
+    author: 'Pramod Kumar',
+    category: 'PWA',
+    tags: ['Frontend', ' PWA']
   },
   {
     id: 12,
     route: 'javascript_sorting',
     title: 'JavaScript Sorting',
-    summary: 'In JavaScript, sorting is primarily done using the built-in sort() method or the non-mutating toSorted() method.'
+    summary: 'In JavaScript, sorting is primarily done using the built-in sort() method or the non-mutating toSorted() method.',
+    publishedDate: '2026-06-05',
+    readTime: '4 min read',
+    author: 'Pramod Kumar',
+    category: 'Node',
+    tags: ['Node', ' Stream']
+  },
+  {
+    id: 14,
+    route: 'node_streaming_chunking_offset_tracking',
+    title: 'Node : Streaming + Chunking + Offset Tracking',
+    summary: 'Never load the whole file into memory. Use a streaming CSV reader.',
+    publishedDate: '2026-06-16',
+    readTime: '8 min read',
+    author: 'Pramod Kumar',
+    category: 'Node',
+    tags: ['Node', ' Stream']
   }
 ];
 export const blogPostDetails = {
@@ -488,8 +559,274 @@ export const blogPostDetails = {
       '<h3>Mutating vs Non-Mutating</h3>',
       '<ul><li><h3>sort(): Modifies the original array directly (in-place mutation).</h3></li><li><h3>toSorted(): Leaves the original array unchanged and returns a brand new sorted array.</h3></li></ul>'
     ]
+  },
+  'node_streaming_chunking_offset_tracking': {
+    heading: 'Node : Streaming + Chunking + Offset Tracking',
+    content: [
+      '<h3>If limited resources available like 10 GB CSV file and only 512 MB RAM, you should never use fs.readFile() because it loads the entire file into memory. Use streams to process the file chunk by chunk.</h3>',
+      '<h4>Wrong Approach: </h4>',
+      `<pre><code>const fs = require('fs'); const data = fs.readFileSync('large.csv', 'utf8');</code></pre>`,
+      '<h5>Memory usage ≈ 10 GB → process crashes.</h5>',
+      '<h4>Stream-Based Approach: </h4>',
+      `<pre><code>nodeStreamingCode1</code></pre>`,
+      '<h5>Memory usage stays very low (few MB).</h5>',
+      '<h4>Using csv-parser Package</h4>',
+      '<h5>For real CSV parsing:</h5>',
+      `<pre><code>npm install csv-parser</code></pre>`,
+      `<pre><code>nodeStreamingCode2</code></pre>`,
+      '<h4>Need Database Insert</h4>',
+      `<h5>Don't insert one row at a time.</h5>`,
+      '<h4>Batch Insert</h4>',
+      `<pre><code>nodeStreamingCode3</code></pre>`,
+      '<h5>Benefits:</h5>',
+      '<ul><li>Fewer DB calls</li><li>Faster throughput</li><li>Lower memory</li></ul>',
+      '<h4>Handling Backpressure</h4>',
+      '<h5>For very large files:</h5>',
+      `<pre><code>nodeStreamingCode4</code></pre>`,
+      '<h5>pipeline() automatically manages errors and backpressure.</h5>',
+      '<p>Backpressure occurs when the producer generates data faster than the consumer can process it.</p>',
+      `<ul>
+        <li>CSV Stream reads 10,000 rows/sec</li>
+        <li>Database can insert only 1,000 rows/sec</li>
+      </ul>`,
+      '<h5>After a few seconds:</h5>',
+      `<pre><code>
+      Memory Buffer
+      -------------
+      Row 1001
+      Row 1002
+      Row 1003
+      ...
+      Row 500000
+      </code></pre>
+
+      <h5>Memory keeps growing and eventually:</h5>
+      <pre><code>JavaScript heap out of memory</code></pre>
+      <h5>or</h5>
+      <pre><code>Process killed</code></pre>
+
+      <h4>Solution: Pause and Resume</h4>`,
+      `<pre><code>nodeStreamingCode5</code></pre>`,
+      `<h5>Now:</h5>
+      <pre><code>
+      Read Row
+      ↓
+      Save to DB
+      ↓
+      Read Next Row
+      </code></pre>
+      <h5>The reader never outruns the database.</h5>
+
+      <h3>What if the server crashes?</h3>
+
+      <h4>This is a very common ETL/import problem.</h4>
+      <h5>Suppose:</h5>
+      <pre><code>
+      10 GB CSV
+      50 million rows
+      </code></pre>
+      <h5>You process:</h5>
+      <pre><code>1 million rows completed</code></pre>
+      <h5>Then:</h5>
+      <pre><code>
+      Server crashed
+      Power failure
+      Deployment restart
+      </code></pre>
+      <h5>You don't want to start again from row 1.</h5>
+
+      <h4>Option 1: Store Last Processed Row Number</h4>
+      <h5>Create a checkpoint table.</h5>`,
+      `<pre><code>nodeStreamingCode6</code></pre>`,
+      `<h5>After every batch:</h5>
+      <pre><code>await updateCheckpoint(currentRow);</code></pre>
+      <h5>Example:</h5>
+      <pre><code>
+      Batch 1 -> Row 1000
+      Batch 2 -> Row 2000
+      Batch 3 -> Row 3000
+      </code></pre>
+      <h5>Store:</h5>
+      <pre><code>last_row = 3000</code></pre>
+
+      <h4>On Restart</h4>
+      <h5>Read checkpoint:</h5>
+
+      <pre><code>const lastRow = await getCheckpoint();</code></pre>
+
+      <h5>Skip rows until:</h5>
+
+      <pre><code>currentRow > lastRow</code></pre>
+      <h5>Then continue processing.</h5>
+
+      <h4>Option 2: Store File Byte Offset</h4>
+      <h5>For very large files, row skipping is slow.</h5>
+      <h5>Store:</h5>
+
+      <pre><code>stream.bytesRead</code></pre>
+      <h5>Example:</h5>
+
+      <pre><code>
+      Processed till:
+      Byte 4,523,123,123
+      </code></pre>
+
+      <h5>Save:</h5>
+
+      <pre><code>offset = 4523123123</code></pre>
+
+      <h4>Restart</h4>
+
+      <pre><code>
+      fs.createReadStream('large.csv', {
+        start: offset
+      });
+      </code></pre>
+
+      <h5>Node starts reading from that position.</h5>
+      <h5>This is much faster than skipping millions of rows.</h5>
+
+      <h4>Option 3: Idempotent Processing</h4>
+      <h5>Suppose row contains:</h5>
+
+      <pre><code>
+      orderId,amount
+      1001,500
+      1002,700
+      </code></pre>
+
+      <h5>Use a unique key:</h5>
+
+      <pre><code>orderId UNIQUE</code></pre>
+
+      <h5>Insert: (PostgreSQL)</h5>
+      <pre><code>
+      INSERT ...
+      ON CONFLICT DO NOTHING
+      </code></pre>
+      <h5>or Insert: (SQL)</h5>
+      <pre><code>INSERT IGNORE</code></pre>
+
+      <h5>Now even if the job restarts and reprocesses some rows:</h5>
+
+      <pre><code>
+      1001 already exists
+      1002 already exists
+      </code></pre>
+
+      <h5>Database ignores duplicates.</h5>
+      <h5>This is called idempotency.</h5>
+
+      <h3>Production Architecture</h3>
+
+      <pre>
+      <code>
+      10 GB CSV
+        |
+        v
+      Read Stream
+        |
+        v
+      Batch (1000 rows)
+        |
+        v
+      DB Insert
+        |
+        +--> Save Checkpoint
+            |
+            +--> Row Number / Byte Offset
+
+      If Crash
+        |
+        v
+      Read Checkpoint
+        |
+        v
+      Resume Processing
+      </code></pre>
+      <p>For ticket booking, eCommerce imports, payment reconciliation, and Kafka consumers, the combination of checkpointing + idempotent writes is the most reliable way to recover from crashes without losing progress or creating duplicates.</p>
+      `
+    ]
   }
 };
+export const nodeStreamingCode1 = `
+  const fs = require('fs');
+  const readline = require('readline');
+
+  const stream = fs.createReadStream('large.csv');
+
+  const rl = readline.createInterface({
+    input: stream,
+    crlfDelay: Infinity
+  });
+
+  rl.on('line', (line) => {
+    // Process one row at a time
+    console.log(line);
+  });
+
+  rl.on('close', () => {
+    console.log('Finished');
+  });
+`;
+export const nodeStreamingCode2 = `
+	const fs = require('fs');
+	const csv = require('csv-parser');
+
+	fs.createReadStream('large.csv')
+	  .pipe(csv())
+	  .on('data', (row) => {
+		console.log(row);
+	  })
+	  .on('end', () => {
+		console.log('Done');
+	  });
+`;
+export const nodeStreamingCode3 = `
+  const batch = [];
+  const BATCH_SIZE = 1000;
+
+  .on('data', async (row) => {
+      batch.push(row);
+
+      if (batch.length >= BATCH_SIZE) {
+          stream.pause();
+
+          await insertMany(batch);
+
+          batch.length = 0;
+          stream.resume();
+      }
+  })
+`;
+export const nodeStreamingCode4 = `
+  const { pipeline } = require('stream/promises');
+
+  await pipeline(
+    fs.createReadStream('large.csv'),
+    csv(),
+    async function* (source) {
+      for await (const row of source) {
+        yield processRow(row);
+      }
+    }
+  );
+`;
+export const nodeStreamingCode5 = `
+  stream.on('data', async (row) => {
+    stream.pause();
+
+    await saveToDB(row);
+
+    stream.resume();
+  });
+`;
+export const nodeStreamingCode6 = `
+  CREATE TABLE import_checkpoint (
+    id INT PRIMARY KEY,
+    last_row BIGINT
+  );
+`;
 export const closureCode = `
       function createCounter() {
         let count = 0; // Private variable

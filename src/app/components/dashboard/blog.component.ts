@@ -5,11 +5,12 @@ import {
 import { blogPosts } from '../../data/blog-posts';
 import { RouterModule } from '@angular/router';
 import { BlogService } from 'src/app/services/blog.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-blog',
   templateUrl: './blog.component.html',
-  imports: [RouterModule]
+  imports: [RouterModule, CommonModule]
 })
 export class BlogComponent implements OnInit, AfterViewInit, OnDestroy {
   blogPosts = blogPosts;

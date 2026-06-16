@@ -19,7 +19,12 @@ export class AdminBlogComponent implements OnInit {
     title: '', 
     summary: '',
     id: 0,
-    route: ''
+    route: '',
+    publishedDate: '',
+    readTime: '',
+    author: '',
+    category: '',
+    tags: []
   };
 
   constructor(private blogService: BlogService) {}
@@ -65,7 +70,12 @@ export class AdminBlogComponent implements OnInit {
       title: '', 
       summary: '',
       id: 0,
-      route: '' 
+      route: '',
+      publishedDate: '',
+      readTime: '',
+      author: '',
+      category: '',
+      tags: []
     };
   }
 }

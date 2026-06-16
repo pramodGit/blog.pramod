@@ -9,7 +9,13 @@ import {
   javascriptSorting_3, 
   javascriptSorting_4, 
   javascriptSorting_5,
-  javascriptSorting_6
+  javascriptSorting_6,
+  nodeStreamingCode1,
+  nodeStreamingCode2,
+  nodeStreamingCode3,
+  nodeStreamingCode4,
+  nodeStreamingCode5,
+  nodeStreamingCode6
 } from '../../data/blog-posts';
 import { NgFor, NgIf } from '@angular/common';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
@@ -40,6 +46,12 @@ export class PostComponent implements OnInit {
     '_javascriptSorting_4': javascriptSorting_4,
     '_javascriptSorting_5': javascriptSorting_5,
     '_javascriptSorting_6': javascriptSorting_6,
+    'nodeStreamingCode1': nodeStreamingCode1,
+    'nodeStreamingCode2': nodeStreamingCode2,
+    'nodeStreamingCode3': nodeStreamingCode3,
+    'nodeStreamingCode4': nodeStreamingCode4,
+    'nodeStreamingCode5': nodeStreamingCode5,
+    'nodeStreamingCode6': nodeStreamingCode6
   };
 
   getSanitizedHtml(html: string): SafeHtml {
