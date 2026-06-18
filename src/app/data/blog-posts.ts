@@ -39,7 +39,7 @@ export const blogPosts: BlogPost[] = [
     title: 'Vulnerability prevention in React',
     summary: '10 points to know about vulnerability prevention in React app',
     publishedDate: '2026-03-15',
-    readTime: '4 min read',
+    readTime: '5 min read',
     author: 'Pramod Kumar',
     category: 'React',
     tags: ['React']
@@ -91,13 +91,13 @@ export const blogPosts: BlogPost[] = [
   {
     id: 9,
     route: 'system_design',
-    title: 'System design',
+    title: 'System design: Distributed systems',
     summary: 'The discipline of building reliable, scalable, maintainable software systems',
     publishedDate: '2026-05-05',
-    readTime: '4 min read',
+    readTime: '5 min read',
     author: 'Pramod Kumar',
     category: 'Node',
-    tags: ['System']
+    tags: ['Distributed systems']
   },
   {
     id: 10,
@@ -138,10 +138,21 @@ export const blogPosts: BlogPost[] = [
     title: 'Node : Streaming + Chunking + Offset Tracking',
     summary: 'Never load the whole file into memory. Use a streaming CSV reader.',
     publishedDate: '2026-06-16',
-    readTime: '8 min read',
+    readTime: '12 min read',
     author: 'Pramod Kumar',
     category: 'Node',
     tags: ['Node', ' Stream']
+  },
+  {
+    id: 15,
+    route: 'design_system_architecture',
+    title: 'Design : System Architecture',
+    summary: 'The discipline of building reliable, scalable, maintainable software systems',
+    publishedDate: '2026-06-18',
+    readTime: '12 min read',
+    author: 'Pramod Kumar',
+    category: 'Node',
+    tags: ['Scalability', ' Availability & Reliability', ' Performance', ' Consistency', ' Compliance', ' Maintainability & Cost']
   }
 ];
 export const blogPostDetails = {
@@ -745,6 +756,288 @@ export const blogPostDetails = {
       Resume Processing
       </code></pre>
       <p>For ticket booking, eCommerce imports, payment reconciliation, and Kafka consumers, the combination of checkpointing + idempotent writes is the most reliable way to recover from crashes without losing progress or creating duplicates.</p>
+      `
+    ]
+  },
+  'design_system_architecture': {
+    heading: 'The Core Concept: System Architecture',
+    content: [
+      `
+      <h2>The Core Blueprint: Anatomy of a System Architecture</h2>
+      <p>When you sit down to design the system architecture for a new application, you are essentially drawing the blueprint for how data will flow, where it will be processed, and how the system will survive real-world chaos.</p>
+      <p>Before looking at the requirements, let's look at the physical or cloud components that usually make up a modern application's infrastructure:</p>
+      <ul><li><b>The Client Layer:</b> The user-facing side (Web apps, Mobile apps, IoT devices) making requests.</li>
+      <li><b>The Routing & Load Balancing Layer:</b> The traffic cop (e.g., Nginx, AWS ALB) that routes incoming internet traffic across multiple servers so no single server gets overwhelmed.</li>
+      <li><b>The Application/API Layer:</b> The compute engines (Microservices, Monolith servers, or Serverless functions) that run the business logic.</li>
+      <li><b>The Caching Layer:</b> Ultra-fast, in-memory data stores (e.g., Redis) used to reduce database load by saving frequently accessed data.</li>
+      <li><b>The Database Layer:</b> The source of truth (SQL or NoSQL databases) where persistent data lives.</li>
+      <li><b>The Messaging/Asynchronous Layer:</b> Message queues or event streams (e.g., RabbitMQ, Kafka) that let different parts of the system talk to each other without waiting for a response.</li></ul>
+      <h2>The Core Pillars: Key Considerations a System Must Fulfill</h2>
+      <p>When designing this setup, you don't just build it randomly. You evaluate every component against Architectural Characteristics (often called Non-Functional Requirements). A successful system architecture must balance these six key considerations:</p>
+      <h3>1. Scalability (Handling Growth)</h3>
+      <h4>Can your system handle a massive influx of users without crashing? There are two ways to achieve this:</h4>
+      <ul><li><b>Vertical Scaling (Scaling Up):</b> Adding more power (CPU, RAM) to an existing server. It has a hard ceiling.</li>
+      <li><b>Horizontal Scaling (Scaling Out):</b> Adding more servers to your pool. This is the gold standard for modern systems, but it requires your application layer to be stateless (meaning servers don't store user session data locally).</li></ul>
+      <h3>2. Availability and Reliability (Surviving Failures)</h3>
+      <p>Systems fail. Hard drives die, networks drop, and cloud regions go offline. Your architecture must be resilient.</p>
+      <ul>
+        <li><b>High Availability (HA):</b> Ensuring the system is operational for a target percentage of time (e.g., "99.99% uptime"). This is achieved by removing Single Points of Failure (SPOFs) using redundancy.</li>
+        <li><b>Fault Tolerance:</b> The ability of a system to continue operating properly even when a component fails (e.g., if Database A dies, Database B automatically takes over via a failover mechanism).</li>
+      </ul>
+      <h3>3. Performance and Latency (Speed)</h3>
+      <p>How fast does your system respond to a user request?</p>
+      <ul>
+        <li><b>Latency:</b> The time it takes for data to travel from the client to the server and back.</li>
+        <li><b>Throughput:</b> The number of requests your system can successfully process per second.</li>
+        <li>Good architecture uses strategies like <b>Content Delivery Networks (CDNs)</b> to serve static files closer to the user, and <b>database indexing</b> or <b>caching</b> to keep response times low.</li>
+      </ul>
+      <h3>4. Data Consistency and Integrity (Accuracy)</h3>
+      <p>When data changes, how quickly does that change reflect across the whole system?</p>
+      <ul>
+        <li>In distributed systems, this is a major challenge. If a user updates their profile in Tab A, does Tab B reflect it instantly?</li>
+        <li>You must choose between <b>Immediate Consistency)</b> (strong locking mechanisms, slower performance) or <b>Eventual Consistency</b> (faster performance, but data takes a few moments to sync everywhere).</li>
+      </ul>
+      <h3>5. Security and Compliance (Protection)</h3>
+      <p>Security cannot be an afterthought bolted on at the end; it must be baked into the infrastructure.</p>
+      <ul>
+        <li><b>Least Privilege:</b> Restricting communication so that components can only talk to what they absolutely need to (e.g., the public internet should never have direct access to your database layer).</li>
+        <li><b>Data Protection:</b> Ensuring data is encrypted both in transit (HTTPS/TLS) and at rest (encrypted inside the database).</li>
+      </ul>
+      <h3>6. Maintainability and Cost</h3>
+      <p>A beautiful architecture is useless if it requires a team of 50 DevOps engineers to maintain or costs more than the business makes.</p>
+      <ul>
+        <li><b>CI/CD Friendly:</b> Can developers deploy updates smoothly without taking the system down?</li>
+        <li><b>Cost Optimization:</b> Are you utilizing cloud resources efficiently? (e.g., turning off staging environments over the weekend, or using serverless functions for unpredictable workloads).</li>
+      </ul>
+      <p>Every great system architecture is a game of trade-offs. You rarely get to maximize all six pillars at once; if you want extreme data consistency, you might sacrifice a bit of speed. If you want extreme availability, your cloud bill will go up.</p>
+      <h2>Highly Used System Architecture Designs</h2>
+      <p>In modern software engineering, choosing the right system architecture is one of the most critical decisions. It determines how scalable, maintainable, fault-tolerant, and performant a system will be.</p>
+      <p>This document explores the most widely used system architecture designs in the industry today, detailing their structures, key components, use cases, advantages, and drawbacks.</p>
+      <h3>1. Monolithic Architecture</h3>
+      <p>The Monolithic architecture is the traditional unified model for software development. In this design, all functional components of an application (user interface, business logic, data access) are bundled together into a single, cohesive codebase and executable.</p>
+      <pre>
+        <code>
+       ┌─────────────────────────────────────────────────────────┐
+       │                 MONOLITHIC APPLICATION                  │
+       │                                                         │
+       │  ┌─────────────────┐ ┌────────────────┐ ┌─────────────┐ │
+       │  │ User Interface  │ │ Business Logic │ │ Data Access │ │
+       │  └─────────────────┘ └────────────────┘ └─────────────┘ │
+       └────────────────────────────┬────────────────────────────┘
+                                    │
+                                    ▼
+                          ┌──────────────────┐
+                          │ Single Database  │
+                          └──────────────────┘
+
+        </code>
+      </pre>
+      <article class="grid-3">
+        <div>
+          <h4>Example</h4>
+          <ul>
+            <li>Angular/React UI</li>
+            <li>Node.js Backend</li>
+            <li>MongoDB</li>
+          </ul>
+        </div>
+        <div>
+          <h4>Pros<h4>
+          <ul>
+            <li>Simple development</li>
+            <li>Easy deployment</li>
+            <li>Good for startups</li>
+          </ul>
+        </div>
+        <div>
+          <h4>Cons<h4>
+          <ul>
+            <li>Difficult to scale individual modules</li>
+            <li>Large codebase becomes hard to maintain</li>
+          </ul>
+        </div>
+      </article>
+      <h3>2. Microservices Architecture</h3>
+      <p>Microservices architecture decomposes a single application into a suite of small, independent, and loosely coupled services. Each service runs in its own process, manages its own private database, and communicates with other services using lightweight mechanisms (usually HTTP REST, gRPC, or Message Brokers).</p>
+      <pre>
+        <code>
+                        ┌────────────────────────────────┐
+                        │          API Gateway           │
+                        └──────┬───────────┬───────────┬─┘
+                               │           │           │
+                  ┌────────────┘           │           └────────────┐
+                  ▼                        ▼                        ▼
+        ┌───────────────────┐    ┌───────────────────┐    ┌───────────────────┐
+        │   User Service    │    │   Order Service   │    │ Inventory Service │
+        ├───────────────────┤    ├───────────────────┤    ├───────────────────┤
+        │ Private Database  │    │ Private Database  │    │ Private Database  │
+        └───────────────────┘    └───────────────────┘    └───────────────────┘
+        </code>
+      </pre>
+      <article class="grid-3">
+        <div>
+          <h4>Key Characteristics:</h4>
+          <ul>
+            <li>Decentralized Data</li>
+            <li>Independent Deployments</li>
+            <li>Polyglot Architecture</li>
+          </ul>
+        </div>
+        <div>
+          <h4>Pros<h4>
+          <ul>
+            <li>Independent Scalability</li>
+            <li>Fault Isolation</li>
+            <li>Organizational Alignment</li>
+          </ul>
+        </div>
+        <div>
+          <h4>Cons<h4>
+          <ul>
+            <li>Operational Complexity</li>
+            <li>Data Consistency</li>
+            <li>Network Latency</li>
+          </ul>
+        </div>
+      </article>
+      <h3>3. Distributed Systems Architecture</h3>
+      <p>A Distributed System consists of multiple autonomous computers (nodes) that communicate through a computer network and coordinate their actions by passing messages. To the end-user, the system appears as a single coherent system.</p>
+      <pre>
+        <code>
+                                      ┌──────────────┐
+                                      │ Load Balancer│
+                                      └──────┬───────┘
+                                             │
+                  ┌──────────────────────────┼──────────────────────────┐
+                  ▼                          ▼                          ▼
+          ┌──────────────┐           ┌──────────────┐           ┌──────────────┐
+          │    Node A    │◄─────────►│    Node B    │◄─────────►│    Node C    │
+          └──────┬───────┘           └──────┬───────┘           └──────┬───────┘
+                  │                          │                          │
+                  ▼                          ▼                          ▼
+          ┌──────────────┐           ┌──────────────┐           ┌──────────────┐
+          │ Partition A  │           │ Partition B  │           │ Partition C  │
+          └──────────────┘           └──────────────┘           └──────────────┘
+
+        </code>
+      </pre>
+      <article class="grid-3">
+        <div>
+          <h4>Key Characteristics:</h4>
+          <ul>
+            <li>Governed by the CAP Theorem</li>
+            <li>Independent Failures</li>
+            <li>No Global Clock</li>
+            <li>Concurrency</li>
+          </ul>
+        </div>
+        <div>
+          <h4>Pros<h4>
+          <ul>
+            <li>Exceptional Scalability</li>
+            <li>High Reliability & Redundancy</li>
+            <li>Low Latency</li>
+          </ul>
+        </div>
+        <div>
+          <h4>Cons<h4>
+          <ul>
+            <li>High Complexity</li>
+            <li>Debugging & Monitoring</li>
+            <li>Security</li>
+          </ul>
+        </div>
+      </article>
+      <h3>4. Event-Driven Architecture (EDA)</h3>
+      <p>An Event-Driven Architecture is a design paradigm in which software components communicate by producing and consuming events. An event represents a state change or an action that has occurred (e.g., "ItemAddedToCart", "InvoicePaid").</p>
+      <pre>
+        <code>
+            PRODUCERS                                                 CONSUMERS
+          ┌───────────┐         ┌─────────────────────────┐         ┌───────────┐
+          │ Checkout  ├────────>│     EVENT BROKER        ├────────>│ Shipping  │
+          │ Service   │  Event  │                         │  Event  │ Service   │
+          └───────────┘         │  ┌───────────────────┐  │         └───────────┘
+                                │  │ Topic: OrderPlaced│  │
+          ┌───────────┐         │  └───────────────────┘  │         ┌───────────┐
+          │ Inventory ├────────>│                         ├────────>│ Analytics │
+          │ Service   │         └─────────────────────────┘         │ Service   │
+          └───────────┘                                             └───────────┘
+        </code>
+      </pre>
+      <article class="grid-3">
+        <div>
+          <h4>Key Characteristics:</h4>
+          <ul>
+            <li>Event Producers</li>
+            <li>Event Broker / Router (e.g., Apache Kafka, RabbitMQ, AWS EventBridge).</li>
+            <li>Event Consumers</li>
+          </ul>
+        </div>
+        <div>
+          <h4>Pros<h4>
+          <ul>
+            <li>Extreme Decoupling</li>
+            <li>Responsiveness</li>
+            <li>Scalability</li>
+          </ul>
+        </div>
+        <div>
+          <h4>Cons<h4>
+          <ul>
+            <li>Complex Testing and Tracing</li>
+            <li>Duplicate Events</li>
+            <li>Eventual Consistency</li>
+          </ul>
+        </div>
+      </article>
+      <h3>5. Serverless Architecture</h3>
+      <p>Serverless architecture (often utilizing Function-as-a-Service, or FaaS) allows developers to build and run applications without provisioning, managing, or scaling servers. Cloud providers handle all system administration, scaling, and execution.</p>
+      <pre>
+        <code>
+              HTTP Request             Triggers
+              ┌──────────┐             ┌────────┐         ┌─────────────────┐
+              │  Client  ├────────────>│  API   ├────────>│ Serverless Func │
+              └──────────┘             │Gateway │         │   (AWS Lambda)  │
+                                       └────────┘         └────────┬────────┘
+                                                                   │ Writes
+                                                                   ▼
+                                                          ┌─────────────────┐
+                                                          │ Cloud Database  │
+                                                          │  (DynamoDB)     │
+                                                          └─────────────────┘
+
+        </code>
+      </pre>
+      <article class="grid-3">
+        <div>
+          <h4>Key Characteristics:</h4>
+          <ul>
+            <li>No Server Management</li>
+            <li>Pay-as-you-Go</li>
+            <li>Auto-Scaling</li>
+          </ul>
+        </div>
+        <div>
+          <h4>Pros<h4>
+          <ul>
+            <li>Zero Maintenance</li>
+            <li>Cost Efficiency</li>
+            <li>Instant Scalability</li>
+          </ul>
+        </div>
+        <div>
+          <h4>Cons<h4>
+          <ul>
+            <li>Cold Starts</li>
+            <li>Vendor Lock-in</li>
+            <li>Execution Time Limits</li>
+          </ul>
+        </div>
+      </article>
+
+
+
+
       `
     ]
   }

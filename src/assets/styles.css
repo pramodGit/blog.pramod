@@ -73,17 +73,15 @@ aside,
 .middle-panel {
   min-height: 10rem;
   padding: 1rem 1.5rem;
-  /* border: 1px solid #aaa; 
-  border-radius: 4px;*/
   margin: 1rem;
-  font-size: 1.4rem;
+  font-size: 1.5rem;
 }
 .middle-panel h1, .middle-panel h2, .middle-panel h3, .middle-panel h4, .middle-panel h5, .middle-panel h6 {
   line-height: 4rem;
 }
-.middle-panel h1 { font-size: 2em; font-weight: 530; color: #2f87ff; line-height: 4.5rem;}
-.middle-panel h2 { font-size: 1.7em; font-weight: 600;}
-.middle-panel h3, .middle-panel h4 { font-weight: 500; }
+.middle-panel h1 { font-size: 2em; font-weight: 530; color: #2f87ff; margin: 2rem 0;}
+.middle-panel h2 { font-size: 1.7em; font-weight: 550;     color: #3a3a3a; margin: 1rem 0;}
+.middle-panel h3, .middle-panel h4 { font-weight: 540; }
 .middle-panel h3 { font-size: 1.9rem;}
 .middle-panel h4 { font-size: 1.6rem;}
 .middle-panel h5 { font-size: 1.4rem; font-weight: 650;}
@@ -91,6 +89,7 @@ aside,
 .middle-panel ul { list-style: disc;}
 .middle-panel ul, .middle-panel ol { margin-left: 2rem;}
 .middle-panel ul > li, .middle-panel ol > li { padding: .4rem 0 .5rem 1.8rem;}
+.middle-panel li { line-height: 1.5;}
 .middle-panel li h2,
 .middle-panel li h3,
 .middle-panel li h4,
@@ -198,9 +197,22 @@ footer {
   padding: 1rem;
   font-weight: bold;
 }
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+  .grid-3 li { line-height: 1.2;}
+
 @media (width < 1024px) {
+  main {padding-top: 2rem; }
   .blog-post {
     border: 1px solid #ccc; border-radius: 1rem;
   }
+  .grid-3 {
+    grid-template-columns: 1fr;
+  }
 }
+
+
 /** Blog End **/
