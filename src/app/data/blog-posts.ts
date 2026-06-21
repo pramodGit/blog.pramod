@@ -153,6 +153,28 @@ export const blogPosts: BlogPost[] = [
     author: 'Pramod Kumar',
     category: 'Node',
     tags: ['Scalability', ' Availability & Reliability', ' Performance', ' Consistency', ' Compliance', ' Maintainability & Cost']
+  },
+  {
+    id: 16,
+    route: 'useEffect_stale_closure',
+    title: 'Stale closures : Where the effect reads an old value',
+    summary: 'In React, you have to be honest with the dependency array. Missing a dependency causes...',
+    publishedDate: '2026-06-21',
+    readTime: '4 min read',
+    author: 'Pramod Kumar',
+    category: 'React',
+    tags: ['useEffect', ' Closure', ' React']
+  },
+  {
+    id: 17,
+    route: 'react_useState_batching',
+    title: 'React useState batching',
+    summary: 'Better performance, less jank, fewer useEffect runs...',
+    publishedDate: '2026-06-21',
+    readTime: '4 min read',
+    author: 'Pramod Kumar',
+    category: 'React',
+    tags: ['useState', ' React']
   }
 ];
 export const blogPostDetails = {
@@ -1040,6 +1062,72 @@ export const blogPostDetails = {
 
       `
     ]
+  },
+  'useEffect_stale_closure': {
+    heading: 'Stale closures occur in JavaScript (especially in frameworks like React)',
+    content: [
+      `
+        <p>When a function "remembers" and uses an outdated variable from a previous render or scope, instead of the latest updated value.</p>
+        <h2>Why They Happen</h2>
+        <p>In JavaScript, a closure gives a function access to its outer scope even after that scope has finished executing. When a function is created, it takes a "snapshot" of the variables around it at that specific moment. If those variables change later on, but the function is not recreated or updated, it will continue to hold onto the old (stale) data.</p>
+        <h2>Common Scenarios & How to Fix Them</h2>
+        <h3>This issue is especially common in modern frontend development when dealing with state updates, asynchronous code, or timers.</h3>
+        <ul>
+          <li><h3>React State Updates in Event Handlers or Timers:</h3> If you have an asynchronous function inside a React component (like setTimeout) that updates a state variable, it will close over the initial value of that variable.
+            <ul>
+              <li>Fix: Use the <b>functional update form</b> of your state setter. For example, use setCount((prev) => prev + 1) instead of setCount(count + 1).</li>
+            </ul>
+          </li>
+          <li><h3>The useEffect Hook:</h3> If you omit a state variable or prop from the dependency array in a useEffect, the callback inside it will reference the state from the render in which it was initially created.
+            <ul><li>Fix: Ensure all variables that your effect relies on are included in the <b>dependency array</b>.</li></ul>
+          </li>
+          <li><h3>Long-lived Callbacks:</h3> Functions passed to children via useCallback might lock onto old variables if the useCallback dependencies are not correctly specified.</li>
+        </ul>
+      `
+    ]
+  },
+  'react_useState_batching': {
+    heading: 'Batching cuts down unnecessary renders',
+    content: [
+      `
+      <h2>React grouping multiple state updates into a single re-render for performance.</h2>
+      <h3>Here’s how it works in practice:</h3>
+      <h2>1. Automatic batching in React 18+</h2>
+      <p>React 18 batches state updates everywhere by default - not just inside event handlers.</p>
+      <pre><code>useStateBatch_1</code></pre>
+      <p>Both setCount and setFlag trigger 1 re-render, not 2.</p>
+      <h3>This applies to:</h3>
+      <ul>
+        <li>onClick, onChange, etc.</li>
+        <li>setTimeout, Promise.then, native event listeners</li>
+        <li>async/await code</li>
+      </ul>
+      <h2>2. Before React 18</h2>
+      <p>Batching only happened inside React event handlers. Outside of them, each setState caused a re-render:</p>
+      <pre><code>useStateBatch_2</code></pre>
+      
+      <p>React 18 fixed this.</p>
+      <h2>3. When batching doesn’t happen</h2>
+      <p>If you need to force separate renders, wrap it in flushSync:</p>
+      <pre><code>useStateBatch_3</code></pre>
+      <h2>4. Key gotchas</h2>
+      <ul>
+        <li>
+          <h3>State updates are async:</h3> console.log(count) right after setCount(count + 1) will show the old value. Use useEffect to see the updated value.
+        </li>
+        <li>
+          <h3>Functional updates:</h3> If you update based on previous state, always use the <b>callback</b> form setCount(c => c + 1). Otherwise you can lose updates due to batching.
+        </li>
+      </ul>
+      <h2>5. Why it matters</h2>
+      <p>
+        Batching cuts down unnecessary renders → better performance, less jank, fewer useEffect runs.
+      </p>
+      <h3>Verify on console logs</h3>
+      <pre><code>useStateBatch_4</code></pre>
+      <h4>If it logs once, you’re on React 18+ with automatic batching.</h4>
+      `
+    ]
   }
 };
 export const nodeStreamingCode1 = `
@@ -1351,4 +1439,60 @@ items.sort((a, b) => b.price - a.price);
 
 // Descending alphabetically by name
 items.sort((a, b) => b.name.localeCompare(a.name));
+`;
+export const useStateBatch_1 = `
+  function Counter() {
+    const [count, setCount] = useState(0);
+    const [flag, setFlag] = useState(false);
+
+    const handleClick = () => {
+      setCount(c => c + 1);  // update 1
+      setFlag(f => !f);      // update 2
+      // React renders ONCE after both run
+      console.log(count);    // still old value inside this handler
+    };
+
+    return &lt;button onClick={handleClick}&gt;Click&lt;/button&gt;
+  }
+`;
+export const useStateBatch_2 = `
+  fetch('/api').then(() => {
+    setA(1); // re-render
+    setB(2); // re-render again
+  });
+`;
+
+export const useStateBatch_3 = `
+  import { flushSync } from 'react-dom';
+
+    flushSync(() => {
+      setCount(c => c + 1);
+    });
+    // DOM is updated here
+    flushSync(() => {
+      setFlag(f => !f);
+    });
+`;
+
+export const useStateBatch_4 = `
+  import { useState } from "react";
+
+  export default function App() {
+    const [a, setA] = useState(0);
+    const [b, setB] = useState(0);
+
+    const handleClick = async () => {
+      setA(1);
+      setB(2);
+      console.log("Sync:", a, b);
+
+      await Promise.resolve();
+      setA(3);
+      setB(4);
+      console.log("After await:", a, b);
+    };
+
+    console.log("Render:", a, b);
+    return &lt;button onClick={handleClick}&gt;Click me&lt;/button&gt;
+  }
 `;

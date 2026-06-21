@@ -15,7 +15,11 @@ import {
   nodeStreamingCode3,
   nodeStreamingCode4,
   nodeStreamingCode5,
-  nodeStreamingCode6
+  nodeStreamingCode6,
+  useStateBatch_1,
+  useStateBatch_2,
+  useStateBatch_3,
+  useStateBatch_4,
 } from '../../data/blog-posts';
 import { NgFor, NgIf } from '@angular/common';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
@@ -51,7 +55,11 @@ export class PostComponent implements OnInit {
     'nodeStreamingCode3': nodeStreamingCode3,
     'nodeStreamingCode4': nodeStreamingCode4,
     'nodeStreamingCode5': nodeStreamingCode5,
-    'nodeStreamingCode6': nodeStreamingCode6
+    'nodeStreamingCode6': nodeStreamingCode6,
+    'useStateBatch_1': useStateBatch_1,
+    'useStateBatch_2': useStateBatch_2,
+    'useStateBatch_3': useStateBatch_3,
+    'useStateBatch_4': useStateBatch_4,
   };
 
   getSanitizedHtml(html: string): SafeHtml {
