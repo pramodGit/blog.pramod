@@ -16,12 +16,12 @@
         }
         <!-- <div class="theme">Theme</div> -->
     </nav>
-    <div class="header-search">
-    <input
-        class="main-search-input"
-        type="search"
-        placeholder="Search Here..."
-        (input)="onSearch($event)"
-    />
+    <div class="header-search" *ngIf="showSearch()">
+        <input
+            class="main-search-input"
+            type="search"
+            placeholder="Search Here..."
+            (input)="onSearch($event)"
+        />
     </div>
 </header>

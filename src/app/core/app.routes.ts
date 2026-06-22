@@ -52,7 +52,7 @@ export const routes: Routes = [
                 ]
             },
             { path: 'test', component: NotFoundComponent },
-            { path: 'post/:route', component: PostComponent },
+            { path: 'post/:route', data: { search: false }, component: PostComponent },
         ]
     },
     { path: '**', redirectTo: '' }

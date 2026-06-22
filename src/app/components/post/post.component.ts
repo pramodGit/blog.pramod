@@ -20,6 +20,18 @@ import {
   useStateBatch_2,
   useStateBatch_3,
   useStateBatch_4,
+  effectSignalAngular_1,
+  effectSignalAngular_2,
+  effectSignalAngular_3,
+  effectSignalAngular_4,
+  effectSignalAngular_5,
+  effectSignalAngular_6,
+  effectSignalAngular_7,
+  effectSignalAngular_8,
+  effectSignalAngular_9,
+  effectSignalAngular_10,
+  effectSignalAngular_11,
+  effectSignalAngular_12,
 } from '../../data/blog-posts';
 import { NgFor, NgIf } from '@angular/common';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
@@ -60,6 +72,18 @@ export class PostComponent implements OnInit {
     'useStateBatch_2': useStateBatch_2,
     'useStateBatch_3': useStateBatch_3,
     'useStateBatch_4': useStateBatch_4,
+    'effectSignalAngular_1': effectSignalAngular_1,
+    'effectSignalAngular_2': effectSignalAngular_2,
+    'effectSignalAngular_3': effectSignalAngular_3,
+    'effectSignalAngular_4': effectSignalAngular_4,
+    'effectSignalAngular_5': effectSignalAngular_5,
+    'effectSignalAngular_6': effectSignalAngular_6,
+    'effectSignalAngular_7': effectSignalAngular_7,
+    'effectSignalAngular_8': effectSignalAngular_8,
+    'effectSignalAngular_9': effectSignalAngular_9,
+    'effectSignalAngular_10': effectSignalAngular_10,
+    'effectSignalAngular_11': effectSignalAngular_11,
+    'effectSignalAngular_12': effectSignalAngular_12,
   };
 
   getSanitizedHtml(html: string): SafeHtml {

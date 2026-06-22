@@ -160,7 +160,7 @@ export const blogPosts: BlogPost[] = [
     title: 'Stale closures : Where the effect reads an old value',
     summary: 'In React, you have to be honest with the dependency array. Missing a dependency causes...',
     publishedDate: '2026-06-21',
-    readTime: '4 min read',
+    readTime: '3 min read',
     author: 'Pramod Kumar',
     category: 'React',
     tags: ['useEffect', ' Closure', ' React']
@@ -175,6 +175,17 @@ export const blogPosts: BlogPost[] = [
     author: 'Pramod Kumar',
     category: 'React',
     tags: ['useState', ' React']
+  },
+  {
+    id: 18,
+    route: 'the_effect_function_in_Angular',
+    title: 'The effect() function in Angular',
+    summary: 'It allows you to run side effects automatically...',
+    publishedDate: '2026-06-22',
+    readTime: '14 min read',
+    author: 'Pramod Kumar',
+    category: 'Angular',
+    tags: ['effect()', ' Angular']
   }
 ];
 export const blogPostDetails = {
@@ -1128,6 +1139,189 @@ export const blogPostDetails = {
       <h4>If it logs once, you’re on React 18+ with automatic batching.</h4>
       `
     ]
+  },
+  'the_effect_function_in_Angular': {
+    heading: 'The effect() function in Angular is one of the core pillars of the Signals reactivity system.',
+    content: [
+      `
+        <p>It allows you to run side effects automatically whenever any of the signals it reads change.</p>
+        <h2>⚙️The History of effect()</h2>
+        <h3>The Past (Before Signals)</h3>
+        <p>Before Angular 16, reactivity was primarily driven by RxJS and Zone.js. If you wanted to run a side effect based on a changing value, you had to manage RxJS observable streams, use the async pipe, or rely on Angular's change detection cycle to catch updates. While powerful, this often led to boilerplate code and tricky memory leaks if observables weren't unsubscribed properly.</p>
+        <h3>The Introduction (Angular 16 & 17)</h3>
+        <p>Introduced in Angular 16 as a developer preview, effect() brought a new way to write declarative side effects. Unlike RxJS, you didn't need to explicitly pipe or subscribe to anything; effect() tracked dependencies automatically. However, it came with strict guardrails (like forbidding signal writes inside effects by default) to prevent the chaotic "change-loops" common in older framework architectures.</p>
+        <h3>The Present (Angular 18 & 2026 Status)</h3>
+        <p>Today, Angular Signals and effect() are fully stable and foundational to modern Angular development. effect() must still be created within an injection context (like a component constructor) unless you explicitly pass an Injector. It has become the standard way to handle logging, synchronization with local storage, and manual DOM manipulations.</p>
+        <h2>⚙️Advantages</h2>
+        <ul>
+          <li><h4>Automatic Dependency Tracking:</h4> You don't have to maintain an array of dependencies. If a signal is read inside the effect, it is tracked.</li>
+          <li><h4>Glitch-Free Execution:</h4> Effects run during the microtask queue after signals stabilize, ensuring you don't get partial or inconsistent state reads.</li>
+          <li><h4>Automatic Cleanup:</h4> effect() gives you a built-in cleanup mechanism to destroy ongoing operations (like setTimeout or event listeners) before the next run or when the component destroys.</li>
+          <li><h4>No Explicit Unsubscribes:</h4> They are tied to the lifecycle of the component/service they are defined in, preventing memory leaks automatically.</li>
+        </ul>
+        <h2>⚙️Disadvantages</h2>
+        <ul>
+          <li><h4>Injection Context Restriction:</h4> You cannot just declare an effect() anywhere (e.g., inside a standard click handler method) without passing an injector.</li>
+          <li><h4>Infinite Loop Risk:</h4> If you accidentally write to a signal that the same effect reads from, you can crash your application with an infinite loop (hence why signal writes are disallowed by default inside effects).</li>
+          <li><h4>Not for State Synchronization:</h4> Using an <small>effect()</small> to compute a new state based on an old one is an anti-pattern. Angular provides <small>computed()</small> specifically for that.</li>
+        </ul>
+        <h2>⚙️Implementation: <small>effect() + signal</small></h2>
+        <p>Here is a practical, modern example of how to implement effect() alongside signal. We will build a component that tracks a search query, logs it, and uses the onCleanup function to mimic a debounced API or console log.</p>
+        <pre><code>effectSignalAngular_1</code></pre>
+        <h3>Crucial Rule: Do Not Use Effects to Set Signals</h3>
+        <p>If you absolutely must update a signal inside an effect, you have to explicitly enable it using allowSignalWrites: true in the options argument, though it is highly discouraged:</p>
+        <pre><code>effectSignalAngular_2</code></pre>
+        <p><b>Because Angular needs to know which component lifecycle owns the effect (so it can destroy it automatically), you cannot write an <small>effect()</small> inside a regular method or a click handler like this:</b></p>
+        <h3>What if you want to read a signal without tracking it?</h3>
+        <p>Sometimes, you need to grab the value of a signal inside an effect, but you don't want the effect to rerun when that specific signal changes. You can wrap it in <small>untracked()</small>:</p>
+        <pre><code>effectSignalAngular_5</code></pre>
+        <p><b>To create an effect() outside of an injection context (like inside a dynamic method, a click handler, or an asynchronous callback), you must manually pass the Injector to the effect's options configuration.</b></p>
+        <p>Here are the two primary ways to achieve this.</p>
+        <h4>1. Capturing the Injector via Dependency Injection (Recommended)</h4>
+        <p>The cleanest way is to inject the Injector at the class level (where the injection context is available) and save it to a property. You can then reference it later inside your custom methods.</p>
+        <pre><code>effectSignalAngular_6</code></pre>
+        <h4>2. Passing the Injector directly into a function</h4>
+        <p>If you are writing a reusable utility function or a service method that sits outside of a component, you can force the caller to provide the injector explicitly.</p>
+        <pre><code>effectSignalAngular_7</code></pre>
+        <p>How to call it from a component:</p>
+        <pre><code>effectSignalAngular_8</code></pre>
+        <h3>⚠️ Crucial Warning: Manual Effects and Memory Leaks</h3>
+        <p>
+        When you define an <small>effect()</small> normally inside a constructor, Angular automatically ties the lifecycle of that effect to the component. When the component destroys, the effect destroys.
+        
+        When you instantiate an effect manually via an passed <small>Injector</small>, it hooks into whatever lifecycle that specific injector belongs to. If you pass an injector from a long-lived root service into a short-lived component method, the effect could outlive the component and cause a memory leak.
+        
+        If you are creating effects dynamically multiple times, always clean them up manually using the <small>EffectRef</small>:
+        </p>
+        <pre><code>effectSignalAngular_9</code></pre>
+        <h3>Forcing an Immediate Run: TestBed.flushEffects()</h3>
+        <p>
+          While microtask scheduling is perfect for production performance, it presents a challenge for unit tests. In a testing environment, you want to assert changes immediately without waiting for asynchronous queues.
+        </p>
+        <p>
+          Angular provides a utility specifically to bypass this batching during testing:
+        </p>
+        <pre><code>effectSignalAngular_11</code></pre>
+        <h2>⚙️Batch processing</h2>
+        <p>Angular uses batch processing and leverages the browser's microtask queue to ensure effects run efficiently, predictably, and precisely once per state change.</p>
+        <h3>The Core Problem: Why Batching Matters</h3>
+        <p>Imagine you have two signals, firstName and lastName, and an effect that combines them.</p>
+        <pre><code>effectSignalAngular_10</code></pre>
+        <p>If Angular were naive, the effect would run twice: once when <small>firstName</small> changes, and once when <small>lastName</small> changes. This means the middle state (<small>Pramod Singh</small>) would be logged needlessly.</p>
+        <p>To prevent this, Angular <b>batches</b> the updates and schedules the effect to run asynchronously.</p>
+        <h3>Step-by-Step: The Microtask Lifecycle</h3>
+        <p>Angular handles this asynchronous scheduling by plugging into the JavaScript <b>Event Loop via Microtasks</b>.</p>
+        <p>A microtask is a short task executed after the currently executing synchronous code finishes, but before the browser repaints the screen or moves on to the next macro-task (like a click event or <small>setTimeout</small>).</p>
+        <p>Here is the exact sequence of events when you update a signal:</p>
+        <h4>1. The Signal is Mutated (Synchronous)</h4>
+        <p>When you call <small>this.firstName.set('Pramod')</small>, the signal changes its internal value immediately. It then notifies all its consumers (like your <small>effect()</small>) that its value is "dirty" (outdated).</p>
+        <h4>2. The Effect is Scheduled (Synchronous)</h4>
+        <p>The effect receives the notification. Instead of running its function immediately, it flags itself as pending and schedules a <b>microtask</b> using the browser's native <small>queueMicrotask()</small> mechanism.</p>
+        <h4>3. Additional Updates are Batched (Synchronous)</h4>
+        <p>When the very next line runs— <small>this.lastName.set('Kumar')</small> —the signal updates and notifies the effect again. The effect sees it is already flagged as pending and already scheduled in the microtask queue. It does nothing. Both updates are now successfully <b>batched</b>.</p>
+        <h4>4. Microtask Execution (Asynchronous)</h4>
+        <p>The main synchronous JavaScript thread finishes executing your method. The call stack empties. Before the browser redraws the UI, the engine looks at the <b>Microtask Queue</b>.</p>
+        <p>Your scheduled effect fires now. It executes, reads the latest values of both <small>firstName</small> (<small>Pramod</small>) and <small>lastName</small> (<small>Kumar</small>), and prints the output <b>exactly once</b>.</p>
+        <h4>📊 Visualizing the Execution Flow</h4>
+        <p>Let’s trace the execution timeline of the code above:</p>
+        <pre>
+          <code>
+            [Main Thread: Synchronous Code]
+            │
+            ├── 1. firstName.set('Pramod') ──> Marks effect as dirty -> Schedules Microtask
+            ├── 2. lastName.set('Kumar')  ──> Effect already dirty -> Does nothing else
+            │
+            ▼ (Synchronous code ends, Call Stack is empty)
+            ========================================================================
+            [Microtask Queue: Asynchronous Code Execution]
+            │
+            └── 3. Angular flushes effects ──> Runs effect() callback 
+                                          ──> Reads live signals: 'Pramod' and 'Kumar'
+                                          ──> Outputs: "User updated: Pramod Kumar"
+          </code>
+        </pre>
+        <h4>Glitch-Free Execution</h4>
+        <p>
+          This batching strategy guarantees what reactive programming calls glitch-free execution. A "glitch" is a temporary, incorrect intermediate state visible to the user or system.
+        </p>
+        <p>
+          Because effects wait until the end of the current execution block to fire, they will never catch your application in a half-updated state. They only care about the final, stabilized state of your signals.
+        </p>
+        <h2>⚙️useEffect vs effect()</h2>
+        <p>While both React’s useEffect and Angular’s effect() serve the exact same conceptual purpose—running side effects in response to data changes—they operate under fundamentally different mental models.</p>
+        <h3>Code Comparison</h3>
+        <p>Let's look at how the exact same feature—logging a count value and setting up a timer—looks in both frameworks.</p>
+        <h4>React: useEffect</h4>
+        <p>In React, you have to be honest with the dependency array. Missing a dependency causes "stale closures" (where the effect reads an old value).</p>
+        <pre><code>effectSignalAngular_3</code></pre>
+        <h4>Angular: effect()</h4>
+        <p>In Angular, you don't provide a dependency array. Angular detects that count() was called and automatically listens to it.</p>
+        <pre><code>effectSignalAngular_4</code></pre>
+        <h3>Why Angular's effect() Has an Advantage</h3>
+        <p>The biggest headache with React's useEffect has always been managing the dependency array and avoiding infinite loops.</p>
+        <ul>
+        <li><h4>No Stale Closures:</h4> Because Angular signals are reactive containers (functions you call to get the value), effect() always fetches the absolute latest value when it runs. You can't accidentally lock in an old variable state.</li>
+        <li><h4>Dynamic Dependencies:</h4> If your Angular effect has an if/else statement, it will only track the signals evaluated in the current branch. React's dependency array tracks everything all the time, forcing the effect to run even if an unused variable changes.</li>
+        </ul>
+        <h3>The Catch: Where React wins on Flexibility</h3>
+        <p>React allows you to place <small>useEffect</small> anywhere in your component code. Angular's <small>effect()</small> is highly restricted by <b>Injection Context</b>.</p>
+        <h3> Key Differences at a Glance</h3>
+        <style>\
+          .compare-table{\
+          width:100%;\
+          border-collapse:collapse;\
+          margin:0 0;\
+          }\
+          .compare-table th{\
+          text-align:left;\
+          padding:12px;\
+          border-bottom:1px solid #cfcfcf;\
+          font-size:16px;\
+          font-weight:700;\
+          }\
+          .compare-table td{\
+          padding:16px 12px;\
+          border-bottom:1px solid #d0d0d0d0;\
+          vertical-align:middle;\
+          }\
+          .compare-table .highlight{\
+          font-weight:700;\
+          }\
+          </style>\
+          <table class="compare-table">\
+          <tr>\
+          <th>Feature</th>\
+          <th>React useEffect</th>\
+          <th>Angular effect()</th>\
+          </tr>\
+          <tr>\
+          <td>Dependency Tracking</td>\
+          <td>Manual: You must explicitly pass a dependency array [dep1, dep2].</td>\
+          <td>Automatic: Dynamic tracking. If a signal is read inside the block, it's a dependency.</td>\
+          </tr>\
+          <tr>\
+          <td>Execution Timing</td>\
+          <td>After the DOM updates and the browser paints.</td>\
+          <td>Asynchronously, during the microtask queue after signals stabilize.</td>\
+          </tr>\
+          <tr>\
+          <td>Stale Closures</td>\
+          <td>A constant risk if you forget a dependency in the array.</td>\
+          <td>Impossible, because it always reads the live value from the signal.</td>\
+          </tr>\
+		      <tr>\
+          <td>Creation Context</td>\
+          <td>Anywhere inside the component body.</td>\
+          <td>Must be in an Injection Context (constructor/service) or passed an injector.</td>\
+          </tr>\
+		      <tr>\
+          <td>Cleanup Trigger</td>\
+          <td>Runs the returned function before the next run or unmount.</td>\
+          <td>Uses a provided onCleanup(callback) function argument.</td>\
+          </tr>\
+        </table>
+      `
+    ]
   }
 };
 export const nodeStreamingCode1 = `
@@ -1496,3 +1690,232 @@ export const useStateBatch_4 = `
     return &lt;button onClick={handleClick}&gt;Click me&lt;/button&gt;
   }
 `;
+
+export const effectSignalAngular_1 = `
+  import { Component, signal, effect } from '@angular/core';
+
+  @Component({
+    selector: 'app-search',
+    standalone: true,
+    template: \`input 
+          type="text" 
+          [value]="searchQuery()" 
+          (input)="updateSearch($event)" 
+          placeholder="Type to search..." 
+        />
+        <p>Current Query: {{ searchQuery() }}</p>
+  })
+  export class SearchComponent {
+    // 1. Define the Signal
+    searchQuery = signal<string>('');
+
+    constructor() {
+      // 2. Define the Effect inside the constructor (Injection Context)
+      effect((onCleanup) => {
+        // Angular knows this effect depends on 'searchQuery' because we call it here
+        const currentQuery = this.searchQuery();
+        
+        console.log(\`Effect triggered! User is searching for: \${currentQuery}\`);
+
+        // 3. Using the Cleanup function
+        const timer = setTimeout(() => {
+          if (currentQuery) {
+            console.log(\`Mock API Call: Fetching results for "\${currentQuery}\"\`);
+          }
+        }, 500);
+
+        // This runs before the next effect execution OR when the component is destroyed
+        onCleanup(() => {
+          console.log(\`Cleaning up previous timer for: \${currentQuery}\`);
+          clearTimeout(timer);
+        });
+      });
+    }
+
+    // 4. Method to update the signal
+    updateSearch(event: Event) {
+      const input = event.target as HTMLInputElement;
+      this.searchQuery.set(input.value);
+    }
+  }
+`;
+export const effectSignalAngular_2 = `
+  effect(() => {
+    // Anti-pattern: Use computed() instead!
+    this.someOtherSignal.set(this.mySignal() * 2); 
+  }, { allowSignalWrites: true });
+`;
+export const effectSignalAngular_3 = `
+
+  import { useState, useEffect } from 'react';
+
+  function Counter() {
+    const [count, setCount] = useState(0);
+
+    useEffect(() => {
+      console.log(\`Count is now: \${count}\`);
+
+      const timer = setTimeout(() => {
+        console.log(\`Delayed log: \${count}\`);
+      }, 1000);
+
+      // Cleanup is done by returning a function
+      return () => {
+        clearTimeout(timer);
+      };
+    }, [count]); // <-- Mandatary manual dependency array
+  }
+
+`;
+export const effectSignalAngular_4 = `
+  import { Component, signal, effect } from '@angular/core';
+
+  @Component({/*...*/})
+  export class CounterComponent {
+    count = signal(0);
+
+    constructor() {
+      effect((onCleanup) => {
+        // Angular automatically tracks \`this.count()\` because it's executed here
+        console.log(\`Count is now: \${this.count()}\`);
+
+        const timer = setTimeout(() => {
+          console.log(\`Delayed log: \${this.count()}\`);
+        }, 1000);
+
+        // Cleanup is handled via an explicit argument
+        onCleanup(() => {
+          clearTimeout(timer);
+        });
+      }); // <-- No dependency array needed!
+    }
+  }
+`;
+export const effectSignalAngular_5 = `
+  import { signal, effect, untracked } from '@angular/core';
+
+  // ...
+  currentUser = signal('Alice');
+  theme = signal('dark');
+
+  constructor() {
+    effect(() => {
+      // The effect will rerun whenever 'theme' changes...
+      const currentTheme = this.theme(); 
+      
+      // ...but it will NOT rerun if 'currentUser' changes.
+      const user = untracked(() => this.currentUser()); 
+
+      console.log(\`Applying \${currentTheme} theme for \${user}\`);
+    });
+  }
+`;
+export const effectSignalAngular_6 = `
+  import { Component, signal, effect, Injector, inject } from '@angular/core';
+
+  @Component({
+    selector: 'app-manual-effect',
+    standalone: true,
+    template: \`
+      &lt;button (click)="createNewTrackingEffect()">
+        Start Tracking Value
+      </button>
+      &lt;button (click)="count.set(count() + 1)">
+        Increment: {{ count() }}
+      </button>\`
+  })
+  export class ManualEffectComponent {
+    count = signal(0);
+    
+    // 1. Capture the current injector while in the constructor context
+    private injector = inject(Injector);
+
+    createNewTrackingEffect() {
+      console.log('Effect manually registered!');
+
+      // 2. Pass the captured injector inside the options object
+      effect(() => {
+        console.log(\`[Manual Effect] Count is now: \${this.count()}\`);
+      }, { injector: this.injector }); 
+    }
+  }
+`;
+export const effectSignalAngular_7 = `
+  import { effect, Injector, Signal } from '@angular/core';
+
+  /**
+   * A reusable utility function that sets up an effect manually
+   */
+  export function watchSignalExternally<T>(
+    targetSignal: Signal<T>, 
+    injector: Injector
+  ) {
+    effect(() => {
+      console.log(\`External watcher received value:\`, targetSignal());
+    }, { injector }); // <-- Bypasses the active injection context requirement
+  }
+`;
+export const effectSignalAngular_8 = `
+  @Component({ ... })
+  export class AppComponent {
+    mySignal = signal('Hello');
+    private injector = inject(Injector);
+
+    triggerExternalWatch() {
+      // Pass the signal and our current component injector context
+      watchSignalExternally(this.mySignal, this.injector);
+    }
+  }
+`;
+export const effectSignalAngular_9 = `
+  import { Component, signal, effect, Injector, inject, EffectRef } from '@angular/core';
+
+  // ... Inside your class
+  private injector = inject(Injector);
+  private myEffectRef?: EffectRef;
+
+  startEffect() {
+    // Clean up any previously created manual effect first
+    this.myEffectRef?.destroy();
+
+    // Save the reference returned by effect()
+    this.myEffectRef = effect(() => {
+      console.log(this.count());
+    }, { injector: this.injector });
+  }
+
+  ngOnDestroy() {
+    // Clean up manual effect explicitly on destroy to ensure no leaks
+    this.myEffectRef?.destroy();
+  }
+`;
+export const effectSignalAngular_10 = `
+  firstName = signal('Pramod');
+  lastName = signal('Singh');
+
+  effect(() => {
+    console.log(\`User updated: \${this.firstName()} \${this.lastName()}\`);
+  });
+
+  // Updating both signals sequentially
+  this.firstName.set('Pramod');
+  this.lastName.set('Kumar');
+`;
+export const effectSignalAngular_11 = `
+  import { TestBed } from '@angular/core/testing';
+
+  it('should track signal changes', () => {
+    const mySignal = signal('initial');
+    
+    effect(() => console.log(mySignal()));
+
+    mySignal.set('changed');
+    
+    // At this point, the effect HAS NOT run yet because it's sitting in the microtask queue.
+
+    TestBed.flushEffects(); // <--- This forces the microtask queue to empty immediately
+
+    // Now the effect has run, and you can safely write your expectations.
+  });
+`;
+export const effectSignalAngular_12 = ``;
