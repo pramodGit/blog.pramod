@@ -186,6 +186,28 @@ export const blogPosts: BlogPost[] = [
     author: 'Pramod Kumar',
     category: 'Angular',
     tags: ['effect()', ' Angular']
+  },
+  {
+    id: 19,
+    route: 'put_vs_patch',
+    title: 'Put vs Patch',
+    summary: 'The primary difference between PUT and PATCH is that...',
+    publishedDate: '2026-06-25',
+    readTime: '5 min read',
+    author: 'Pramod Kumar',
+    category: 'REST',
+    tags: ['REST', ' Backend']
+  },
+  {
+    id: 20,
+    route: 'real_dom_vs_virtual_dom',
+    title: 'Real DOM vs Virtual DOM',
+    summary: 'React minimizes real DOM touches by being smart about batching and only updating what changed',
+    publishedDate: '2026-06-25',
+    readTime: '10 min read',
+    author: 'Pramod Kumar',
+    category: 'React',
+    tags: ['React', ' Virtual DOM', ' Reconcillation', ' Fibre']
   }
 ];
 export const blogPostDetails = {
@@ -1320,6 +1342,497 @@ export const blogPostDetails = {
           <td>Uses a provided onCleanup(callback) function argument.</td>\
           </tr>\
         </table>
+      `
+    ]
+  },
+  'put_vs_patch': {
+    heading: `PUT completely replaces an existing resource, whereas PATCH applies partial modifications to it.`,
+    content: [`
+      <h3>Think of PUT as replacing an entire piece of clothing, while PATCH is like sewing a small patch onto a specific torn spot.</h3>
+      <table class="compare-table">
+        <tr>
+          <th class="highlight">Feature</th>
+          <th>PUT</th>
+          <th>PATCH</th>
+        </tr>
+        <tr>
+          <td class="highlight">Operation Type</td>
+          <td>Complete replacement / Overwrite</td>
+          <td>Partial modification</td>
+        </tr>
+        <tr>
+          <td class="highlight">Payload Required</td>
+          <td>Full resource representation</td>
+          <td>Only the fields being changed</td>
+        </tr>
+        <tr>
+          <td class="highlight">Idempotency(multiple times without<br /> changing the result)</td>
+          <td>Strictly Idempotent</td>
+          <td>Not guaranteed to be idempotent</td>
+        </tr>
+        <tr>
+          <td class="highlight">Resource Creation</td>
+          <td>Creates a resource if it does not exist</td>
+          <td>Generally fails if resource does not exist</td>
+        </tr>
+        <tr>
+          <td class="highlight">Bandwidth Usage</td>
+          <td>Higher (sends complete data)</td>
+          <td>Lower (sends only modified data)</td>
+      </table>
+      <h4>Concrete Code Example:</h4>
+      <p>We have user info like:</p>
+      <pre><ocde>
+        {
+          "id": 1,
+          "name": "Jane Doe",
+          "email": "jane@example.com",
+          "role": "admin"
+        }
+      </code></pre>
+      <p>Using PATCH to update the email, just need to send:"</p>
+      <pre><code>"email": "jane@example.com"</code></pre>
+      <p>The server modifies only that specific field.</p>
+      <p>But for PUT you have to send complete JSON as payload otherwise it will update the complete info like:</p>
+      <pre><code>
+        {
+          "id": 1,
+          "name": null,
+          "email": "janedoe@example.com",
+          "role": null
+        }
+      </code></pre>
+      <h4>When to Use Which</h4>
+      <p><b>Choose PUT when:</b> You are performing a bulk update, replacing an entire configuration file, or updating a resource where the client is guaranteed to have the complete, up-to-date schema.</p>
+      <p><b>Choose PATCH when:</b> You are updating single fields from a mobile app with limited bandwidth, modifying nested attributes, or working with massive database rows where sending the whole object is inefficient.</p>
+      <article>
+        <h2>Key Differences Breakdown</h2>
+
+        <section>
+          <h3>1. Payload Content &amp; Data Loss Risk</h3>
+          <ul>
+            <li>
+              <strong>PUT:</strong> You must send the entire resource representation. If you leave out optional fields, the server will typically overwrite them with <code>null</code> or reset them to default values.
+            </li>
+            <li>
+              <strong>PATCH:</strong> You only send the specific attributes you want to modify. The server merges your changes with the existing resource, keeping all other untouched fields intact.
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>2. Idempotency</h3>
+          <ul>
+            <li>
+              <strong>PUT:</strong> Idempotent. Making the same identical request ten times will yield the exact same resource state as making it once.
+            </li>
+            <li>
+              <strong>PATCH:</strong> Non-idempotent by default. While mutating a simple text field behaves identically if repeated, a PATCH request containing operational logic&mdash;such as appending an item to an array or incrementing a value (<code>{"views": "+1"}</code>)&mdash;will alter the final state every time it is executed.
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>3. Handling Non-Existent Resources</h3>
+          <ul>
+            <li>
+              <strong>PUT:</strong> If a target resource does not exist at the specified URL, the server can use the provided payload to create it from scratch.
+            </li>
+            <li>
+              <strong>PATCH:</strong> Strictly designed to alter existing resources. Attempting to patch a resource that does not exist usually throws a <code>404 Not Found</code> error.
+            </li>
+          </ul>
+        </section>
+      </article>
+      <h2>We can do any updates by POST..then what is the use of these...PUT or PATCH</h2>
+      <article>
+        <p>
+          That is a completely fair point. Technically, you can use <code>POST</code> for everything. A server will process whatever data you send it, regardless of the HTTP method.
+        </p>
+        <p>
+          The reason we use <code>PUT</code> and <code>PATCH</code> instead of just <code>POST</code> comes down to API standards (REST architecture), predictability, and safety.
+        </p>
+        <p>Here is exactly why we use them instead of just relying on <code>POST</code>.</p>
+
+        <section>
+          <h3>1. Intent and Readability (The Code Tells a Story)</h3>
+          <p>
+            HTTP methods act as verbs. When other developers, frontend teams, or external clients look at your API documentation or network logs, the method instantly tells them what the request is doing.
+          </p>
+          <ul>
+            <li><code>POST /users</code> means: "Create a brand new user."</li>
+            <li><code>PUT /users/101</code> means: "Replace user 101 entirely."</li>
+            <li>
+              <code>PATCH /users/101</code> means: "Fix/update a specific piece of user 101."
+            </li>
+          </ul>
+          <p>
+            If everything is <code>POST</code>, you lose this clarity. You have to read the URL or the request body just to guess if it is creating, updating, or deleting.
+          </p>
+        </section>
+
+        <section>
+          <h3>2. Idempotency (The Safety Net)</h3>
+          <p>
+            This is the biggest technical reason. <code>PUT</code> is idempotent; <code>POST</code> is not.
+          </p>
+          <p>Imagine a unstable mobile network where a user clicks a button, but the connection drops for a second. The app automatically retries the request.</p>
+          <ul>
+            <li>
+              If you use <code>POST /orders</code>: If the first request actually reached the server before dropping, retrying it will create a duplicate order. You just charged the customer twice.
+            </li>
+            <li>
+              If you use <code>PUT /orders/12345</code>: No matter how many times the app retries due to a bad network, the server will just overwrite order <code>12345</code> with the exact same data. The state remains identical. No duplicate is created.
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>3. Smart Network Caching and Proxies</h3>
+          <p>
+            The internet relies on intermediate systems like firewalls, proxies, and content delivery networks (CDNs). These systems follow strict HTTP rules:
+          </p>
+          <ul>
+            <li>They know that <code>POST</code> requests change data in unpredictable ways, so they never cache them or automatically retry them.</li>
+            <li>They know <code>PUT</code> is safe to retry automatically if a network glitch occurs because it won't create duplicate data.</li>
+            <li>
+              If you break these rules and use <code>POST</code> for everything, network infrastructure cannot help optimize or secure your traffic correctly.
+            </li>
+          </ul>
+        </section>
+        <section>
+          <h3>Summary: The Tool Analogy</h3>
+          <p>Think of HTTP methods like tools in a toolbox:</p>
+          <ul>
+            <li>You can use a heavy wrench (<code>POST</code>) to hit a nail, turn a screw, and bolt a nut. It will technically work if you hit it hard enough.</li>
+            <li>But it is much safer, cleaner, and more efficient to use a hammer (<code>POST</code> for creating), a screwdriver (<code>PATCH</code> for minor tweaks), and a wrench (<code>PUT</code> for swapping a whole part).</li>
+          </ul>
+        </section>
+      </article>
+      <pre>
+        <code>
+        // Clean, standard REST router
+        router.post('/users', createNewUser);       // Always creates
+        router.put('/users/:id', replaceUser);      // Always replaces
+        router.patch('/users/:id', updateFields);   // Always updates partially
+        </code>
+      </pre>
+      <p>
+        Just because you can write custom database logic to make POST act like PUT or PATCH doesn't mean you should. Utilizing the correct HTTP verbs shifts the burden of predictability from your custom Javascript code onto the global standards of the web.
+      </p>
+    `]
+  },
+  'real_dom_vs_virtual_dom': {
+    heading: `Real DOM vs Virtual DOM`,
+    content: [
+      `
+      <h2>Real DOM</h2>
+      <p>The actual browser representation of your HTML — a tree of objects the browser renders to the screen.</p>
+      <p><strong>Key traits:</strong></p>
+      <ul>
+        <li>Every change (adding a node, changing a class, updating text) triggers the browser to recalculate layout, repaint, and possibly reflow the entire page section</li>
+        <li>Direct manipulation (<code>document.getElementById(...).innerHTML = ...</code>) is expensive when done repeatedly, because each change can trigger a full reflow/repaint cycle</li>
+        <li>Updating it is synchronous and immediate</li>
+      </ul>
+
+      <h2>Virtual DOM</h2>
+      <p>A lightweight JavaScript object representation of the real DOM, kept in memory by libraries like React.</p>
+      <p><strong>How it actually works:</strong></p>
+      <ul>
+        <li>When state changes, React creates a new Virtual DOM tree</li>
+        <li>React diffs this new tree against the previous Virtual DOM tree (this is the "reconciliation" algorithm)</li>
+        <li>React calculates the minimal set of changes needed</li>
+        <li>React applies only those changes to the real DOM in a single batch</li>
+      </ul>
+      <p><strong>Why this matters:</strong> Real DOM operations are the bottleneck, not JS object operations. Diffing two JS objects in memory is cheap; touching the real DOM is expensive. So React minimizes real DOM touches by being smart about batching and only updating what changed.</p>
+
+      <h2>Key comparison table</h2>
+      <table class="compare-table">
+        <tr><th>Aspect</th><th>Real DOM</th><th>Virtual DOM</th></tr>
+        <tr><td>Update speed</td><td>Slow (layout/reflow each time)</td><td>Fast (diffing is in-memory)</td></tr>
+        <tr><td>Update strategy</td><td>Direct, immediate</td><td>Batched, diffed, then applied</td></tr>
+        <tr><td>Memory</td><td>Lives in browser engine</td><td>Lightweight JS object copy</td></tr>
+        <tr><td>Manipulation</td><td><code>document.querySelector</code>, <code>innerHTML</code> etc.</td><td>Managed by React internally (you rarely touch it directly)</td></tr>
+      </table>
+
+      <h2>Important nuance (this is what separates a good answer from a generic one)</h2>
+      <p>A lot of people say "Virtual DOM is always faster" — that's not strictly true. For a single, isolated DOM update, manipulating the real DOM directly can actually be faster than the Virtual DOM diffing overhead.</p>
+      <p><strong>The real win of Virtual DOM is:</strong></p>
+      <ul>
+        <li>Batching multiple updates together into one real DOM write</li>
+        <li>Developer experience — you write declarative code ("this is what the UI should look like given this state") instead of manually tracking and mutating DOM nodes</li>
+        <li>Predictability at scale — in large, frequently-updating UIs, naive direct DOM manipulation gets messy and bug-prone fast; the Virtual DOM diffing makes performance more consistent even if not always faster in every micro-case</li>
+      </ul>
+
+      <p>
+        "Virtual DOM doesn't make DOM updates instant — it makes them efficient and predictable by batching and minimizing actual DOM writes, while letting developers write declarative UI code instead of manually managing DOM mutations."
+      </p>
+      <h2>Reconciliation</h2>
+      <p>Reconciliation is the algorithm React uses to figure out what changed between the old Virtual DOM tree and the new one, so it knows what to update in the real DOM.</p>
+
+      <h3>The naive problem</h3>
+      <p>Diffing two trees in the general computer-science sense is an O(n³) problem — way too slow for UI updates. React makes it O(n) by using two key heuristics:</p>
+
+      <h4>1. Different component types → different trees</h4>
+      <p>If an element changes type (e.g., <code>&lt;div&gt;</code> becomes <code>&lt;span&gt;</code>, or <code>&lt;ComponentA /&gt;</code> becomes <code>&lt;ComponentB /&gt;</code>), React doesn't bother diffing their children at all — it tears down the old subtree completely and builds a new one from scratch.</p>
+      <pre>
+        <code>
+          // Before
+          &lt;div>&lt;Counter />&lt;/div>
+
+          // After  
+          &lt;span>&lt;Counter />&lt;/span>
+        </code>
+      </pre>
+      <p>React unmounts the entire <code>&lt;div&gt;</code> subtree (including <code>Counter</code> and its state) and mounts a fresh <code>&lt;span&gt;</code> subtree. State is lost here — this is a common gotcha.</p>
+
+      <h4>2. Same component type → update in place</h4>
+      <p>If the type stays the same, React keeps the underlying DOM node and just updates the changed attributes/props, then recurses into children.</p>
+      <pre>
+        <code>
+          // Before
+          &lt;div className="old" />
+          // After
+          &lt;div className="new" />
+        </code>
+      </pre>
+      <p>React just updates the <code>className</code> attribute — the DOM node itself is reused.</p>
+
+      <h3>Diffing children — where keys come in</h3>
+      <p>This is the tricky part. When React diffs a list of children, by default it compares them by index position.</p>
+      <pre>
+        <code>
+          // Before
+          &lt;ul>
+            &lt;li>Apple</li>
+            &lt;li>Banana</li>
+          &lt;/ul>
+
+          // After (inserted "Mango" at the start)
+          &lt;ul>
+            &lt;li>Mango</li>
+            &lt;li>Apple</li>
+            &lt;li>Banana</li>
+          &lt;/ul>
+        </code>
+      </pre>
+      <p>Without keys, React compares index-by-index:</p>
+      <ul>
+        <li>Index 0: <code>Apple</code> → <code>Mango</code> (React thinks this changed, so it mutates the text)</li>
+        <li>Index 1: <code>Banana</code> → <code>Apple</code> (mutates again)</li>
+        <li>Index 2: nothing → <code>Banana</code> (creates a new node)</li>
+      </ul>
+      <p>So instead of recognizing "one item was inserted at the top," React does 3 unnecessary mutations — and if those <code>&lt;li&gt;</code>s had internal state or input values, that state would get scrambled across the wrong items.</p>
+
+      <h3>Keys — the fix</h3>
+      <p>A <code>key</code> tells React "this is the same logical item across renders," independent of its position.</p>
+      <pre>
+        <code>
+          &lt;ul>
+            &lt;li key="apple">Apple</li>
+            &lt;li key="banana">Banana</li>
+          &lt;/ul>
+        </code>
+      </pre>
+      <p>Now when Mango is inserted at the top:</p>
+      <pre>
+        <code>
+          &lt;ul>
+            &lt;li key="mango">Mango</li>
+            &lt;li key="apple">Apple</li>
+            &lt;li key="banana">Banana</li>
+          &lt;/ul>
+        </code>
+      </pre>
+      <p>React matches by key, not position: <code>apple</code> and <code>banana</code> are recognized as unchanged, just moved, and <code>mango</code> is recognized as newly inserted. Result: 1 insertion, 0 wasted mutations, and any state inside <code>Apple</code>/<code>Banana</code> components is preserved correctly.</p>
+      <h3>Why <code>key={index}</code> is a common anti-pattern</h3>
+      <pre>
+        <code>
+          {items.map((item, index) => (
+            &lt;li key={index}>{item.name}</li>
+          ))}
+        </code>
+      </pre>
+      <p>This technically satisfies React's "keys required" warning, but it's functionally the same as having no key — index is position. If the list reorders, gets filtered, or has items inserted/removed in the middle, React will misattribute state again.</p>
+      <p>Correct approach: use a stable, unique identifier from your data.</p>
+      <pre>
+        <code>
+          {items.map((item) => (
+            &lt;li key={item.id}>{item.name}</li>
+          ))}
+        </code>
+      </pre>
+      <h4>Real consequence example (this is the kind of thing interviewers probe)</h4>
+      <pre>
+        <code>
+          function TodoList({ todos }: { todos: Todo[] }) {
+            return (
+              &lt;ul>
+                {todos.map((todo, index) => (
+                  &lt;li key={index}>
+                    &lt;input defaultValue={todo.text} />
+                  &lt;/li>
+                ))}
+              &lt;/ul>
+            );
+          }
+        </code>
+      </pre>
+      <p>If you delete the first todo, React (using index keys) thinks item 0's text just changed — but the <code>&lt;input&gt;</code> is uncontrolled (<code>defaultValue</code>), so it won't re-render the input's value, and now your inputs are showing the wrong text for the wrong todos. Using <code>key={todo.id}</code> fixes this because React correctly unmounts the deleted item instead of reusing the wrong DOM node.</p>
+      <h3>Quick Summary</h3>
+      <p>"Reconciliation is React's diffing algorithm — it compares the new Virtual DOM tree to the old one using two rules: same type → update in place, different type → tear down and rebuild. For lists, React uses keys to match elements across renders by identity rather than position, so it can correctly detect insertions, deletions, and reorders without unnecessary DOM mutations or state corruption. Index-based keys defeat this because index changes whenever order changes."</p>
+
+      <article>
+        <h2>Fiber</h2>
+        <p>Fiber is where React fundamentals get genuinely advanced — so let's go deep.</p>
+
+        <h3>Why Fiber exists — the problem it solved</h3>
+        <p>Before React 16, the reconciliation algorithm (now called the "Stack Reconciler") worked recursively and synchronously. Once React started rendering an update, it walked the entire tree top-to-bottom in one uninterruptible pass — it couldn't pause, couldn't prioritize, couldn't yield control back to the browser.</p>
+
+        <p>The problem this caused: If you had a large tree (thousands of components) and triggered a re-render, React would block the main thread until the entire tree was processed. During that time:</p>
+        <ul>
+          <li>The browser couldn't respond to user input (typing, clicking)</li>
+          <li>Animations would stutter</li>
+          <li>The page would feel "janky" or frozen</li>
+        </ul>
+        <p>This is the core issue Fiber was built to fix.</p>
+
+        <h3>What Fiber actually is</h3>
+        <p>Fiber is a complete rewrite of React's reconciliation engine (shipped in React 16). It reframes rendering as incremental, interruptible units of work instead of one big recursive call stack.</p>
+
+        <p>Concretely: every element in your component tree gets a corresponding "fiber" node — a plain JS object that holds:</p>
+        <ul>
+          <li>The component type and props</li>
+          <li>A pointer to its child, sibling, and parent fiber</li>
+          <li>The work that needs to be done on it (mount, update, delete)</li>
+          <li>Its priority level</li>
+        </ul>
+
+        <pre><code>// Simplified shape of a fiber node
+      {
+        type: 'div',
+        key: null,
+        child: FiberNode,
+        sibling: FiberNode,
+        return: FiberNode, // parent
+        pendingProps: {...},
+        memoizedProps: {...},
+        effectTag: 'UPDATE', // or 'PLACEMENT', 'DELETION'
+      }</code></pre>
+
+        <p>This turns the component tree into a linked list-like structure that React can traverse manually, one fiber at a time — instead of relying on the JS call stack (which can't be paused).</p>
+
+        <h3>Two phases of work</h3>
+        <p>Fiber splits rendering into two distinct phases:</p>
+
+        <h4>1. Render/Reconciliation phase (interruptible)</h4>
+        <ul>
+          <li>React walks the fiber tree, calls component render functions, and figures out what changed</li>
+          <li>This phase can be paused, aborted, or restarted — React can stop, let the browser handle a higher-priority task (like a keystroke), then resume</li>
+          <li>No actual DOM mutations happen here — it's all just building a "work-in-progress" tree</li>
+        </ul>
+
+        <h4>2. Commit phase (NOT interruptible)</h4>
+        <ul>
+          <li>Once reconciliation is complete, React applies all the calculated changes to the real DOM in one synchronous pass</li>
+          <li>This must be uninterrupted, because partial DOM updates would leave the UI in an inconsistent visual state</li>
+        </ul>
+
+        <p>This split is the whole trick: the expensive "figure out what changed" work can be paused and prioritized, while the actual DOM writing (which is fast) happens all at once.</p>
+
+        <h3>Priority &amp; scheduling — the practical payoff</h3>
+        <p>Fiber introduced the idea that not all updates are equally urgent:</p>
+
+        <table class="compare-table">
+          <thead>
+            <tr><th>Update type</th><th>Priority</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>User typing in an input</td><td>High</td></tr>
+            <tr><td>Animation frame</td><td>High</td></tr>
+            <tr><td>Data fetched in background, updating a list</td><td>Lower</td></tr>
+            <tr><td>Off-screen content rendering</td><td>Lowest</td></tr>
+          </tbody>
+        </table>
+
+        <p>This is what enables features like:</p>
+        <ul>
+          <li><h5>useTransition</h5> — mark a state update as "non-urgent," letting React interrupt it if something more urgent comes in</li>
+          <li><h5>useDeferredValue</h5> — defer re-rendering an expensive value until the browser has spare time</li>
+          <li>Concurrent Mode / Concurrent Rendering (React 18) — React can work on multiple versions of the UI in memory, prioritize, and even discard in-progress renders if a newer update supersedes them</li>
+        </ul>
+
+        <h3>A mental model to use in interviews</h3>
+        <blockquote>
+          <p>"Before Fiber, React used the JS call stack directly for recursion, which is synchronous and can't be paused. Fiber replaces that with its own data structure — a tree of fiber nodes — so React can walk the tree manually, pause between units of work, hand control back to the browser if something urgent comes in (like user input), and resume later. It also splits work into a render phase, which is interruptible, and a commit phase, which isn't, since DOM writes have to happen atomically."</p>
+        </blockquote>
+
+        <h3>Common interview follow-ups after Fiber</h3>
+        <ul>
+          <li>"What's the difference between React 17 and React 18 rendering?" → React 18's concurrent features (<code>startTransition</code>, automatic batching across promises/timeouts, <code>useDeferredValue</code>) are all built on top of Fiber — Fiber made them possible, React 18 exposed them to developers</li>
+          <li>"What is automatic batching?" → React 18 batches state updates even inside promises, <code>setTimeout</code>, and native event handlers (not just React event handlers like before)</li>
+          <li>"Does Fiber affect class vs function components differently?" → No — Fiber operates underneath both; it's an internal engine change, not an API change</li>
+        </ul>
+
+        <h3>Where this connects back to your stack</h3>
+        <p>This topic is more "explain the internals" than something you'll directly write code for — but it's a strong signal of depth in interviews. It also segues naturally into why <code>useTransition</code>/<code>useDeferredValue</code> matter for performance in data-heavy dashboards, which is a realistic scenario for a Full Stack role working with API data.</p>
+
+        <section>
+          <h3>Follow-up: Reconciliation vs Fiber — clearing up a misconception</h3>
+
+          <p><strong>User asked:</strong> "the reconciliation algorithm has to be compare current DOM's virtual tree... still it is slow... then React introduced the fibre node for each Virtual DOM's tree node"</p>
+
+          <p>You're circling the right idea but there's a subtle misconception worth fixing — this exact confusion trips people up in interviews, so let's nail it precisely.</p>
+
+          <h4>The correction</h4>
+          <p>Fiber did <strong>NOT</strong> make the diffing algorithm itself faster or less work. The O(n) heuristic diffing rules (same type → update in place, different type → rebuild) stayed the same before and after Fiber. The amount of computation needed to figure out what changed is roughly identical.</p>
+          <p><strong>What Fiber actually changed:</strong> HOW that work gets executed, not how much work there is.</p>
+
+          <h4>Pre-Fiber (Stack Reconciler) — the real problem</h4>
+          <p>It wasn't that diffing was "too slow" in terms of algorithm complexity. The problem was execution model:</p>
+          <p>Old way: recursive function calls using the JS call stack</p>
+
+          <pre><code>walkTree(rootNode)
+        → walkTree(child1)
+          → walkTree(child1.child1)
+            → walkTree(child1.child1.child1)
+              ... (can't stop here, JS call stack is committed)</code></pre>
+
+          <p>Once this recursive call started, JavaScript's own call stack had no mechanism to pause mid-way, check "hey, did the user just press a key?", and come back later. The call stack runs to completion or not at all. Even if the total diffing work was small, if it happened to coincide with the user typing, the typing would lag because the main thread was busy doing this synchronous tree walk.</p>
+
+          <p>So: same amount of work, but zero ability to interrupt it.</p>
+
+          <h4>Post-Fiber — same work, but schedulable</h4>
+          <p>Fiber replaces the implicit JS call stack with an explicit data structure (the fiber tree, a linked list of nodes with child/sibling/return pointers) that React itself walks, one node at a time, in a loop — not via recursive function calls.</p>
+
+          <pre><code>// Conceptually, instead of:
+          function walk(node) {
+            doWork(node);
+            node.children.forEach(walk); // recursive, can't pause
+          }
+
+          // Fiber does something closer to:
+          let nextUnitOfWork = fiberRoot;
+          while (nextUnitOfWork && hasTimeRemaining()) {
+            nextUnitOfWork = performUnitOfWork(nextUnitOfWork);
+          }
+          // if time runs out, yield back to browser, resume later
+          </code>
+          </pre>
+
+          <p>Because React now controls the loop itself (instead of the JS engine controlling it via recursion), React can ask after every single fiber node: "Do I have time left in this frame, or should I yield back to the browser?" This uses the browser's idle-time scheduling (conceptually similar to <code>requestIdleCallback</code>).</p>
+
+          <h4>Summary</h4>
+          <p>"the reconciliation algorithm has to compare... still it is slow... then React introduced fiber"</p>
+          <p>The accurate framing is:</p>
+          <ul>
+            <li>Reconciliation (the diffing) was never algorithmically slow in big-O terms — O(n) was already efficient</li>
+            <li>The perceived slowness/jank came from <b>uninterruptible synchronous execution</b>, not from the diffing logic being computationally expensive</li>
+            <li>Fiber didn't speed up the diffing math — it made the <b>execution interruptible and prioritizable</b>, so the browser never gets blocked long enough to feel janky</li>
+          </ul>
+          <p>"Fiber doesn't make reconciliation algorithmically faster — the diffing rules are the same. What Fiber changes is the execution model: instead of a synchronous recursive walk that can't be paused, Fiber turns the tree into a linked structure of units of work that React can pause, prioritize, and resume — so large updates don't block the browser from responding to urgent things like user input."</p>
+        </section>
+      </article>
       `
     ]
   }

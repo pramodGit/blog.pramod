@@ -179,6 +179,38 @@ p > small { font-size: 1em;}
   margin-bottom: 1rem;
 }
 
+.compare-table {
+    width:100%;
+    border-collapse:collapse;
+    font-size:18px;
+    line-height:1.6;
+    margin:20px 0;
+}
+.compare-table th {
+    text-align:left;
+    padding:16px 12px;
+    border-bottom:1px solid #cfcfcf;
+    font-size:20px;
+    font-weight:700;
+}
+.compare-table td {
+    padding:16px 12px;
+    border-bottom:1px solid #d0d0d0d0;
+    vertical-align:middle;
+}
+.compare-table code {
+    background:#f3f3f3;
+    border:1px solid #e8e8e8;
+    border-radius:8px;
+    padding:4px 10px;
+    font-size:0.95em;
+    font-family:monospace;
+    color:#a12622;
+}
+.compare-table .highlight {
+    font-weight:700;
+}
+
 .read-more {
   font-weight: bold;
   color: #007bff;
